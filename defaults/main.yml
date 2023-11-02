@@ -18,6 +18,7 @@ semaphore_access_key_encryption: ''
 semaphore_base_path: "/{{ semaphore_identifier }}"
 semaphore_config_path: "{{ semaphore_base_path }}/config"
 semaphore_data_path: "{{ semaphore_base_path }}/data"
+semaphore_dyn_config_path: "{{ semaphore_base_path }}/etc"
 semaphore_playbook_path: "{{ semaphore_data_path }}/playbooks"
 semaphore_env_path: "{{ semaphore_config_path }}/env"
 
@@ -48,7 +49,7 @@ semaphore_container_http_host_bind_port: ""
 # Use this to expose this container to a reverse proxy, which runs in a different container network.
 semaphore_container_additional_networks: []
 
-semaphore_database_hostname: ''
+semaphore_database_host: ''
 semaphore_database_port: 5432
 semaphore_database_name: semaphore
 semaphore_database_username: semaphore
