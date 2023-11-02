@@ -1,0 +1,57 @@
+---
+
+- name: Ensure semaphore network is created in Docker
+  community.docker.docker_network:
+    name: "{{ semaphore_container_network }}"
+    driver: bridge
+
+
+- name: Ensure semaphore path exists
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: 0700
+    owner: "{{ semaphore_uid }}"
+    group: "{{ semaphore_gid }}"
+  with_items:
+    - {path: "{{ semaphore_base_path }}", when: true}
+    - {path: "{{ semaphore_config_path }}", when: true}
+
+- name: Ensure semaphore data paths exists
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ semaphore_uid }}"
+    group: "{{ semaphore_gid }}"
+  with_items:
+    - {path: "{{ semaphore_data_path }}", when: true}
+    - {path: "{{ semaphore_playbook_path }}", when: true}
+
+
+- name: Ensure semaphore traefik labels are installed
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/labels.j2"
+    dest: "{{ semaphore_config_path }}/labels"
+    owner: "{{ semaphore_uid }}"
+    group: "{{ semaphore_gid }}"
+    mode: 0640
+
+- name: Ensure semaphore configuration is deployed
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/env.j2"
+    dest: "{{ semaphore_config_path }}/env"
+    owner: "{{ semaphore_uid }}"
+    group: "{{ semaphore_gid }}"
+    mode: 0640
+
+- name: Ensure semaphore container image is pulled
+  community.docker.docker_image:
+    name: "{{ semaphore_container_image }}"
+    source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
+
+- name: Ensure semaphore.service installed
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/systemd/semaphore.service.j2"
+    dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
+    mode: 0644

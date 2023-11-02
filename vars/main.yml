@@ -1,0 +1,2 @@
+---
+semaphore_users: "{{ semaphore_users_auto + semaphore_users_additional }}"

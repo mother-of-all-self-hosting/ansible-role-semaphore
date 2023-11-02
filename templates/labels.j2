@@ -1,0 +1,39 @@
+{% if semaphore_container_labels_traefik_enabled %}
+{% if semaphore_container_labels_traefik_docker_network %}
+traefik.docker.network={{ semaphore_container_labels_traefik_docker_network }}
+{% endif %}
+
+{% set middlewares = [] %}
+
+{% if semaphore_container_labels_traefik_additional_request_headers.keys() | length > 0 %}
+{% for name, value in semaphore_container_labels_traefik_additional_request_headers.items() %}
+traefik.http.middlewares.{{ semaphore_identifier }}-add-request-headers.headers.customrequestheaders.{{ name }}={{ value }}
+{% endfor %}
+{% set middlewares = middlewares + [semaphore_identifier + '-add-request-headers'] %}
+{% endif %}
+
+{% if semaphore_container_labels_traefik_additional_response_headers.keys() | length > 0 %}
+{% for name, value in semaphore_container_labels_traefik_additional_response_headers.items() %}
+traefik.http.middlewares.{{ semaphore_identifier }}-add-response-headers.headers.customresponseheaders.{{ name }}={{ value }}
+{% endfor %}
+{% set middlewares = middlewares + [semaphore_identifier + '-add-response-headers'] %}
+{% endif %}
+
+traefik.enable=true
+{% endif %}
+traefik.http.routers.{{ semaphore_identifier }}.rule=Host("{{ semaphore_hostname }}")
+{% if semaphore_container_labels_traefik_priority | int > 0 %}
+traefik.http.routers.{{ semaphore_identifier }}.priority={{ semaphore_container_labels_traefik_priority }}
+{% endif %}
+{% if middlewares | length > 0 %}
+traefik.http.routers.{{ semaphore_identifier }}.middlewares={{ middlewares | join(',') }}
+{% endif %}
+traefik.http.routers.{{ semaphore_identifier }}.service={{ semaphore_identifier }}
+traefik.http.routers.{{ semaphore_identifier }}.entrypoints={{ semaphore_container_labels_traefik_entrypoints }}
+traefik.http.routers.{{ semaphore_identifier }}.tls={{ semaphore_container_labels_traefik_tls | to_json }}
+{% if semaphore_container_labels_traefik_tls %}
+traefik.http.routers.{{ semaphore_identifier }}.tls.certResolver={{ semaphore_container_labels_traefik_tls_certResolver }}
+{% endif %}
+traefik.http.services.{{ semaphore_identifier }}.loadbalancer.server.port={{ semaphore_container_http_port }}
+
+{{ semaphore_container_labels_additional_labels }}
