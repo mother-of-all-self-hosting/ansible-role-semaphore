@@ -29,6 +29,13 @@
     - {path: "{{ semaphore_data_path }}", when: true}
     - {path: "{{ semaphore_playbook_path }}", when: true}
 
+- name: Ensure semaphore passwd is created
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/passwd.j2"
+    dest: "{{ semaphore_config_path }}/passwd"
+    owner: "{{ semaphore_uid }}"
+    group: "{{ semaphore_gid }}"
+    mode: 0640
 
 - name: Ensure semaphore traefik labels are installed
   ansible.builtin.template:

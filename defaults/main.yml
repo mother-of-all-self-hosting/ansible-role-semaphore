@@ -5,6 +5,7 @@ semaphore_identifier: semaphore
 
 semaphore_hostname: ''
 
+semaphore_username: 'semaphore'
 semaphore_uid: ''
 semaphore_gid: ''
 
