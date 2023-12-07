@@ -25,7 +25,7 @@ semaphore_env_path: "{{ semaphore_config_path }}/env"
 
 semaphore_systemd_required_services_list: ['docker.service']
 
-semaphore_version: 2.9.36
+semaphore_version: 2.9.37
 
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
 semaphore_container_image_registry_prefix: docker.io/
