@@ -22,12 +22,68 @@ semaphore_data_path: "{{ semaphore_base_path }}/data"
 semaphore_dyn_config_path: "{{ semaphore_base_path }}/etc"
 semaphore_playbook_path: "{{ semaphore_data_path }}/playbooks"
 semaphore_env_path: "{{ semaphore_config_path }}/env"
+semaphore_customized_container_src_path: "{{ semaphore_base_path }}/customized-container-src"
 
 semaphore_systemd_required_services_list: ['docker.service']
 
 semaphore_version: 2.9.37
 
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
+
+# semaphore_container_image_customizations_enabled controls whether a customized semaphore image will be built.
+#
+# We toggle this variable to `true` when certain features which require a custom build are enabled.
+# Feel free to toggle this to `true` yourself and specify build steps in `semaphore_container_image_customizations_dockerfile_body_custom`.
+#
+# See:
+# - `roles/semaphore-server/templates/customizations/Dockerfile.j2`
+# - `semaphore_container_image_customizations_dockerfile_body_custom`
+# - `semaphore_container_image_customized`
+# - `semaphore_container_image_final`
+semaphore_container_image_customizations_enabled: |
+  {{
+    (
+      semaphore_container_image_customizations_just_installation_enabled
+      or
+      semaphore_container_image_customizations_packages_to_install | length > 0
+    )
+  }}
+
+
+# just support
+# Also see ../../templates/customizations/Dockerfile.j2
+semaphore_container_image_customizations_just_installation_enabled: false
+semaphore_container_image_customizations_just_packages: ['just']
+
+# A list of packages to install in the customized semaphore container image.
+# To add your own, use `semaphore_container_image_customizations_packages_to_install_custom`
+semaphore_container_image_customizations_packages_to_install: "{{ (semaphore_container_image_customizations_packages_to_install_auto + semaphore_container_image_customizations_packages_to_install_custom) | unique }}"
+semaphore_container_image_customizations_packages_to_install_auto: |
+  {{
+    (semaphore_container_image_customizations_just_packages if semaphore_container_image_customizations_just_installation_enabled else [])
+  }}
+semaphore_container_image_customizations_packages_to_install_custom: []
+
+# semaphore_container_image_customizations_dockerfile_body_custom contains your custom Dockerfile steps
+# for building your customized semaphore image based on the original (upstream) image (`semaphore_container_image`).
+# A `FROM ...` clause is included automatically so you don't have to.
+#
+# Example:
+# semaphore_container_image_customizations_dockerfile_body_custom: |
+#  RUN echo 'This is a custom step for building the customized container image for semaphore.'
+#  RUN echo 'You can override semaphore_container_image_customizations_dockerfile_body_custom to add your own steps.'
+#  RUN echo 'You do NOT need to include a FROM clause yourself.'
+semaphore_container_image_customizations_dockerfile_body_custom: ''
+
+
+# semaphore_container_image_customized is the name of the locally built semaphore image
+# which adds various customizations on top of the original (upstream) semaphore image.
+# This image will be based on the upstream `semaphore_container_image` image, only if `semaphore_container_image_customizations_enabled: true`.
+semaphore_container_image_customized: "localhost/semaphore:{{ semaphore_container_image_tag }}-customized"
+
+# semaphore_container_image_final holds the name of the semaphore image to run depending on whether or not customizations are enabled.
+semaphore_container_image_final: "{{ semaphore_container_image_customized if semaphore_container_image_customizations_enabled else semaphore_container_image }}"
+
 semaphore_container_image_registry_prefix: docker.io/
 semaphore_container_image_tag: "v{{ semaphore_version }}"
 semaphore_container_image_force_pull: "{{ semaphore_container_image.endswith(':latest') }}"
