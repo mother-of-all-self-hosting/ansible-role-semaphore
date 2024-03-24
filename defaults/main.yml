@@ -1,5 +1,7 @@
 ---
 
+# Project source code URL: https://github.com/ansible-semaphore/semaphore
+
 semaphore_enabled: true
 semaphore_identifier: semaphore
 
