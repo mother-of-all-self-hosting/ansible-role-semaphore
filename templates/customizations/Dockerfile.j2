@@ -1,0 +1,9 @@
+FROM {{ semaphore_container_image }}
+
+{% if semaphore_container_image_customizations_packages_to_install | length > 0 %}
+USER root
+RUN apk update && apk add {{ semaphore_container_image_customizations_packages_to_install | join(' ') }}
+USER "{{ semaphore_uid }}"
+{% endif %}
+
+{{ semaphore_container_image_customizations_dockerfile_body_custom }}

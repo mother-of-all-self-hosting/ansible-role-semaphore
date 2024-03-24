@@ -28,7 +28,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
                 --mount type=bind,src={{ semaphore_playbook_path }},dst={{ semaphore_container_playbook_path }} \
                 --read-only \
                 --env-file={{ semaphore_env_path }} \
-                {{ semaphore_container_image }}
+                {{ semaphore_container_image_final }}
 
 {% for network in semaphore_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ semaphore_identifier }}
