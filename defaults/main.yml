@@ -28,6 +28,7 @@ semaphore_customized_container_src_path: "{{ semaphore_base_path }}/customized-c
 
 semaphore_systemd_required_services_list: ['docker.service']
 
+# renovate: datasource=docker depName=semaphoreui/semaphore versioning=semver
 semaphore_version: 2.9.56
 
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
