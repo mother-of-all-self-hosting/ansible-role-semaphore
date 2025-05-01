@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
-# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2024 MASH project contributors
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -32,29 +33,17 @@
     - {path: "{{ semaphore_data_path }}", when: true}
     - {path: "{{ semaphore_playbook_path }}", when: true}
 
-- name: Ensure Semaphore passwd is created
+- name: Ensure Semaphore support files created
   ansible.builtin.template:
-    src: "{{ role_path }}/templates/passwd.j2"
-    dest: "{{ semaphore_config_path }}/passwd"
+    src: "{{ role_path }}/templates/{{ item }}.j2"
+    dest: "{{ semaphore_config_path }}/{{ item }}"
     owner: "{{ semaphore_uid }}"
     group: "{{ semaphore_gid }}"
     mode: 0640
-
-- name: Ensure Semaphore traefik labels are installed
-  ansible.builtin.template:
-    src: "{{ role_path }}/templates/labels.j2"
-    dest: "{{ semaphore_config_path }}/labels"
-    owner: "{{ semaphore_uid }}"
-    group: "{{ semaphore_gid }}"
-    mode: 0640
-
-- name: Ensure Semaphore configuration is deployed
-  ansible.builtin.template:
-    src: "{{ role_path }}/templates/env.j2"
-    dest: "{{ semaphore_config_path }}/env"
-    owner: "{{ semaphore_uid }}"
-    group: "{{ semaphore_gid }}"
-    mode: 0640
+  with_items:
+    - env
+    - labels
+    - passwd
 
 - name: Ensure Semaphore container image is pulled
   community.docker.docker_image:
