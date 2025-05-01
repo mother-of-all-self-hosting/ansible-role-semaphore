@@ -1,34 +1,18 @@
 <!--
 SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
+SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+SPDX-FileCopyrightText: 2025 Suguru Hirahara
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 # Semaphore Ansible Role
 
-![Semaphore Logo](assets/semaphore.png)
+This is an [Ansible](https://www.ansible.com/) role which installs [Semaphore](https://www.ansible-semaphore.com/) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
-![Lint badge](https://woodpecker.hyteck.de/api/badges/moan0s/ansible-role-semaphore/status.svg)
+This role *implicitly* depends on:
 
-Semaphore is a responsive web UI for running Ansible playbooks. This role helps you to set up Semaphore:
+- [`com.devture.ansible.role.playbook_help`](https://github.com/devture/com.devture.ansible.role.playbook_help)
+- [`com.devture.ansible.role.systemd_docker_base`](https://github.com/devture/com.devture.ansible.role.systemd_docker_base)
 
-- with everything run in [Docker](https://www.docker.com/) containers
-- powered by [the official Semaphore container image](https://hub.docker.com/r/semaphoreui/semaphore)
-
-
-## Installing
-
-To configure and install Semaphore on your own server(s), you should use a playbook like [Mother of all self-hosting](https://github.com/mother-of-all-self-hosting/mash-playbook) or write your own.
-
-# Configuring this role for your playbook
-
-```
-semaphore_enabled: true
-semaphore_hostname: 'example.org'
-
-semaphore_db_host:
-
-semaphore_db_name:
-semaphore_db_user:
-semaphore_db_password:
-```
+Check [defaults/main.yml](defaults/main.yml) for the full list of supported options.
