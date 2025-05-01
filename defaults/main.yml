@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 # Project source code URL: https://github.com/ansible-semaphore/semaphore
 
 semaphore_enabled: true
@@ -47,7 +46,6 @@ semaphore_container_image_customizations_enabled: |
     )
   }}
 
-
 # just support
 # Also see ../../templates/customizations/Dockerfile.j2
 semaphore_container_image_customizations_just_installation_enabled: false
@@ -72,7 +70,6 @@ semaphore_container_image_customizations_packages_to_install_custom: []
 #  RUN echo 'You can override semaphore_container_image_customizations_dockerfile_body_custom to add your own steps.'
 #  RUN echo 'You do NOT need to include a FROM clause yourself.'
 semaphore_container_image_customizations_dockerfile_body_custom: ''
-
 
 # semaphore_container_image_customized is the name of the locally built semaphore image
 # which adds various customizations on top of the original (upstream) semaphore image.
@@ -117,7 +114,6 @@ semaphore_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 semaphore_container_labels_traefik_additional_request_headers: "{{ semaphore_container_labels_traefik_additional_request_headers_auto | combine(semaphore_container_labels_traefik_additional_request_headers_custom) }}"
 semaphore_container_labels_traefik_additional_request_headers_auto: {}
 semaphore_container_labels_traefik_additional_request_headers_custom: {}
-
 
 # Controls which additional headers to attach to all HTTP responses.
 # To add your own custom response headers, use `semaphore_container_labels_traefik_additional_response_headers_custom`
