@@ -25,23 +25,23 @@ ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_s
 ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ semaphore_identifier }} 2>/dev/null || true'
 
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
-                --rm \
-                --name={{ semaphore_identifier }} \
-                --log-driver=none \
-                --user={{ semaphore_uid }}:{{ semaphore_gid }} \
-                --cap-drop=ALL \
-                {% if semaphore_container_http_host_bind_port %}
-                -p {{ semaphore_container_http_host_bind_port }}:{{ semaphore_container_http_port }} \
-                {% endif %}
-                --label-file={{ semaphore_config_path }}/labels \
-                --network={{ semaphore_container_network }} \
-                --tmpfs=/tmp:rw,noexec,nosuid,size=100m \
-                --mount type=bind,src={{ semaphore_config_path }}/passwd,dst=/etc/passwd,ro \
-                --mount type=bind,src={{ semaphore_dyn_config_path }},dst=/etc/semaphore \
-                --mount type=bind,src={{ semaphore_playbook_path }},dst={{ semaphore_container_playbook_path }} \
-                --read-only \
-                --env-file={{ semaphore_env_path }} \
-                {{ semaphore_container_image_final }}
+      --rm \
+      --name={{ semaphore_identifier }} \
+      --log-driver=none \
+      --user={{ semaphore_uid }}:{{ semaphore_gid }} \
+      --cap-drop=ALL \
+      {% if semaphore_container_http_host_bind_port %}
+      -p {{ semaphore_container_http_host_bind_port }}:{{ semaphore_container_http_port }} \
+      {% endif %}
+      --label-file={{ semaphore_config_path }}/labels \
+      --network={{ semaphore_container_network }} \
+      --tmpfs=/tmp:rw,noexec,nosuid,size=100m \
+      --mount type=bind,src={{ semaphore_config_path }}/passwd,dst=/etc/passwd,ro \
+      --mount type=bind,src={{ semaphore_dyn_config_path }},dst=/etc/semaphore \
+      --mount type=bind,src={{ semaphore_playbook_path }},dst={{ semaphore_container_playbook_path }} \
+      --read-only \
+      --env-file={{ semaphore_env_path }} \
+      {{ semaphore_container_image_final }}
 
 {% for network in semaphore_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ semaphore_identifier }}
