@@ -5,7 +5,7 @@
 
 ---
 
-- name: Ensure semaphore path exists
+- name: Ensure Semaphore path exists
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
@@ -20,7 +20,7 @@
       state: directory
       when: "{{ semaphore_container_image_customizations_enabled }}"
 
-- name: Ensure semaphore data paths exists
+- name: Ensure Semaphore data paths exists
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
@@ -31,7 +31,7 @@
     - {path: "{{ semaphore_data_path }}", when: true}
     - {path: "{{ semaphore_playbook_path }}", when: true}
 
-- name: Ensure semaphore passwd is created
+- name: Ensure Semaphore passwd is created
   ansible.builtin.template:
     src: "{{ role_path }}/templates/passwd.j2"
     dest: "{{ semaphore_config_path }}/passwd"
@@ -39,7 +39,7 @@
     group: "{{ semaphore_gid }}"
     mode: 0640
 
-- name: Ensure semaphore traefik labels are installed
+- name: Ensure Semaphore traefik labels are installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/labels.j2"
     dest: "{{ semaphore_config_path }}/labels"
@@ -47,7 +47,7 @@
     group: "{{ semaphore_gid }}"
     mode: 0640
 
-- name: Ensure semaphore configuration is deployed
+- name: Ensure Semaphore configuration is deployed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/env.j2"
     dest: "{{ semaphore_config_path }}/env"
@@ -55,7 +55,7 @@
     group: "{{ semaphore_gid }}"
     mode: 0640
 
-- name: Ensure semaphore container image is pulled
+- name: Ensure Semaphore container image is pulled
   community.docker.docker_image:
     name: "{{ semaphore_container_image }}"
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
@@ -81,7 +81,7 @@
           path: "{{ semaphore_customized_container_src_path }}"
           pull: true
 
-- name: Ensure semaphore network is created in Docker
+- name: Ensure Semaphore network is created in Docker
   community.docker.docker_network:
     enable_ipv6: "{{ devture_systemd_docker_base_ipv6_enabled }}"
     name: "{{ semaphore_container_network }}"

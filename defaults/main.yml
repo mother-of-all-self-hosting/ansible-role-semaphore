@@ -32,7 +32,7 @@ semaphore_hostname: ''
 
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
 
-# semaphore_container_image_customizations_enabled controls whether a customized semaphore image will be built.
+# semaphore_container_image_customizations_enabled controls whether a customized Semaphore image will be built.
 #
 # We toggle this variable to `true` when certain features which require a custom build are enabled.
 # Feel free to toggle this to `true` yourself and specify build steps in `semaphore_container_image_customizations_dockerfile_body_custom`.
@@ -56,7 +56,7 @@ semaphore_container_image_customizations_enabled: |
 semaphore_container_image_customizations_just_installation_enabled: false
 semaphore_container_image_customizations_just_packages: ['just']
 
-# A list of packages to install in the customized semaphore container image.
+# A list of packages to install in the customized Semaphore container image.
 # To add your own, use `semaphore_container_image_customizations_packages_to_install_custom`
 semaphore_container_image_customizations_packages_to_install: "{{ (semaphore_container_image_customizations_packages_to_install_auto + semaphore_container_image_customizations_packages_to_install_custom) | unique }}"
 semaphore_container_image_customizations_packages_to_install_auto: |
@@ -66,7 +66,7 @@ semaphore_container_image_customizations_packages_to_install_auto: |
 semaphore_container_image_customizations_packages_to_install_custom: []
 
 # semaphore_container_image_customizations_dockerfile_body_custom contains your custom Dockerfile steps
-# for building your customized semaphore image based on the original (upstream) image (`semaphore_container_image`).
+# for building your customized Semaphore image based on the original (upstream) image (`semaphore_container_image`).
 # A `FROM ...` clause is included automatically so you don't have to.
 #
 # Example:
@@ -76,12 +76,12 @@ semaphore_container_image_customizations_packages_to_install_custom: []
 #  RUN echo 'You do NOT need to include a FROM clause yourself.'
 semaphore_container_image_customizations_dockerfile_body_custom: ''
 
-# semaphore_container_image_customized is the name of the locally built semaphore image
-# which adds various customizations on top of the original (upstream) semaphore image.
+# semaphore_container_image_customized is the name of the locally built Semaphore image
+# which adds various customizations on top of the original (upstream) Semaphore image.
 # This image will be based on the upstream `semaphore_container_image` image, only if `semaphore_container_image_customizations_enabled: true`.
 semaphore_container_image_customized: "localhost/semaphore:{{ semaphore_container_image_tag }}-customized"
 
-# semaphore_container_image_final holds the name of the semaphore image to run depending on whether or not customizations are enabled.
+# semaphore_container_image_final holds the name of the Semaphore image to run depending on whether or not customizations are enabled.
 semaphore_container_image_final: "{{ semaphore_container_image_customized if semaphore_container_image_customizations_enabled else semaphore_container_image }}"
 
 semaphore_container_image_tag: "v{{ semaphore_version }}"
@@ -90,7 +90,7 @@ semaphore_container_image_registry_prefix_upstream: "{{ semaphore_container_imag
 semaphore_container_image_registry_prefix_upstream_default: docker.io/
 semaphore_container_image_force_pull: "{{ semaphore_container_image.endswith(':latest') }}"
 
-# Controls whether the semaphore container exposes its HTTP port (as defined by `semaphore_container_http_port`).
+# Controls whether the Semaphore container exposes its HTTP port (as defined by `semaphore_container_http_port`).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:8731"), or empty string to not expose.
 semaphore_container_http_host_bind_port: ""
@@ -223,7 +223,7 @@ semaphore_access_key_encryption: ''
 # the path to store playbooks in the container
 semaphore_container_playbook_path: "/playbooks"
 
-# Additional environment variables to pass to the semaphore container.
+# Additional environment variables to pass to the Semaphore container.
 # You can use this to further influence the default configuration.
 #
 # Example:
