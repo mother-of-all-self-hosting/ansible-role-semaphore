@@ -5,12 +5,6 @@
 
 ---
 
-- name: Ensure semaphore network is created in Docker
-  community.docker.docker_network:
-    name: "{{ semaphore_container_network }}"
-    driver: bridge
-
-
 - name: Ensure semaphore path exists
   ansible.builtin.file:
     path: "{{ item.path }}"
@@ -66,7 +60,6 @@
     name: "{{ semaphore_container_image }}"
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
 
-
 - when: "semaphore_container_image_customizations_enabled | bool"
   block:
     - name: Ensure customizations Dockerfile is created
@@ -88,6 +81,10 @@
           path: "{{ semaphore_customized_container_src_path }}"
           pull: true
 
+- name: Ensure semaphore network is created in Docker
+  community.docker.docker_network:
+    name: "{{ semaphore_container_network }}"
+    driver: bridge
 
 - name: Ensure semaphore.service installed
   ansible.builtin.template:
