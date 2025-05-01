@@ -196,7 +196,10 @@ semaphore_floc_optout_enabled: true
 semaphore_hsts_preload_enabled: false
 
 # List of systemd services that the Semaphore systemd service depends on
-semaphore_systemd_required_services_list: ['docker.service']
+semaphore_systemd_required_services_list: "{{ semaphore_systemd_required_services_list_default + semaphore_systemd_required_services_list_auto + semaphore_systemd_required_services_list_custom }}"
+semaphore_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+semaphore_systemd_required_services_list_auto: []
+semaphore_systemd_required_services_list_custom: []
 
 semaphore_username: 'semaphore'
 
