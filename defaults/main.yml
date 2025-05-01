@@ -1,5 +1,9 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
-# SPDX-FileCopyrightText: 2024 MASH project contributors
+# SPDX-FileCopyrightText: 2023 - 2024 Nikita Chernyi
+# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2024 Sergio Durigan Junior
+# SPDX-FileCopyrightText: 2024 - 2025 MASH project contributors
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -23,6 +27,7 @@ semaphore_version: 2.9.56
 semaphore_uid: ''
 semaphore_gid: ''
 
+# The hostname at which Semaphore is served.
 semaphore_hostname: ''
 
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
@@ -88,6 +93,7 @@ semaphore_container_image_force_pull: "{{ semaphore_container_image.endswith(':l
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:8731"), or empty string to not expose.
 semaphore_container_http_host_bind_port: ""
 
+# The base container network. It will be auto-created by this role if it doesn't exist already.
 semaphore_container_network: '{{ semaphore_identifier }}'
 
 # The port number in the container
@@ -185,6 +191,7 @@ semaphore_floc_optout_enabled: true
 # See: `semaphore_http_header_strict_transport_security`
 semaphore_hsts_preload_enabled: false
 
+# List of systemd services that the Semaphore systemd service depends on
 semaphore_systemd_required_services_list: ['docker.service']
 
 semaphore_username: 'semaphore'
