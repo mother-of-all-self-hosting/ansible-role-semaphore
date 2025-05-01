@@ -201,6 +201,9 @@ semaphore_systemd_required_services_list_default: "{{ [devture_systemd_docker_ba
 semaphore_systemd_required_services_list_auto: []
 semaphore_systemd_required_services_list_custom: []
 
+# List of systemd services that the Semaphore systemd service wants
+semaphore_systemd_wanted_services_list: []
+
 semaphore_username: 'semaphore'
 
 semaphore_admin_password: ''
