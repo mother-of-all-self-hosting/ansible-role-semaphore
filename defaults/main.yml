@@ -18,7 +18,6 @@ semaphore_config_path: "{{ semaphore_base_path }}/config"
 semaphore_data_path: "{{ semaphore_base_path }}/data"
 semaphore_dyn_config_path: "{{ semaphore_base_path }}/etc"
 semaphore_playbook_path: "{{ semaphore_data_path }}/playbooks"
-semaphore_env_path: "{{ semaphore_config_path }}/env"
 semaphore_customized_container_src_path: "{{ semaphore_base_path }}/customized-container-src"
 
 # renovate: datasource=docker depName=semaphoreui/semaphore versioning=semver
