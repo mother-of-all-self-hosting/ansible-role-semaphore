@@ -1,3 +1,10 @@
+{#
+SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
+SPDX-FileCopyrightText: 2024 MASH project contributors
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
 [Unit]
 Description=Semaphore: Responsive web UI for running Ansible playbooks ({{ semaphore_identifier }})
 {% for service in semaphore_systemd_required_services_list %}
