@@ -21,7 +21,7 @@ semaphore_playbook_path: "{{ semaphore_data_path }}/playbooks"
 semaphore_customized_container_src_path: "{{ semaphore_base_path }}/customized-container-src"
 
 # renovate: datasource=docker depName=semaphoreui/semaphore versioning=semver
-semaphore_version: 2.9.56
+semaphore_version: 2.14.10
 
 semaphore_uid: ''
 semaphore_gid: ''
