@@ -22,7 +22,7 @@
       state: directory
       when: "{{ semaphore_container_image_customizations_enabled }}"
 
-- name: Ensure Semaphore data paths exists
+- name: Ensure Semaphore data paths exist
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
@@ -33,7 +33,7 @@
     - {path: "{{ semaphore_data_path }}", when: true}
     - {path: "{{ semaphore_playbook_path }}", when: true}
 
-- name: Ensure Semaphore support files created
+- name: Ensure Semaphore support files installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/{{ item }}.j2"
     dest: "{{ semaphore_config_path }}/{{ item }}"
@@ -71,14 +71,14 @@
           path: "{{ semaphore_customized_container_src_path }}"
           pull: true
 
-- name: Ensure Semaphore network is created in Docker
+- name: Ensure Semaphore container network is created
   community.docker.docker_network:
     enable_ipv6: "{{ devture_systemd_docker_base_ipv6_enabled }}"
     name: "{{ semaphore_container_network }}"
     driver: bridge
     driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
 
-- name: Ensure semaphore.service installed
+- name: Ensure Semaphore systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/semaphore.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
