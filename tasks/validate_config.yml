@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -12,6 +13,7 @@
   when: "item.old in vars"
   with_items:
     - {'old': 'semaphore_env_path', 'new': '<removed>'}
+    - {'old': 'semaphore_environment_variables_extension', 'new': 'semaphore_environment_variables_additional_variables'}
 
 - name: Fail if required Semaphore settings not defined
   ansible.builtin.fail:
