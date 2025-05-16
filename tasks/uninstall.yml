@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2024 Slavi Pantaleev
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -11,17 +12,19 @@
 
 - when: semaphore_service_stat.stat.exists | bool
   block:
-    - name: Ensure Semaphore service is stopped
+    - name: Ensure Semaphore systemd service is stopped
       ansible.builtin.service:
         name: "{{ semaphore_identifier }}"
         state: stopped
+        enabled: false
         daemon_reload: true
-    - name: Ensure Semaphore service doesn't exist
+
+    - name: Ensure Semaphore systemd service does not exist
       ansible.builtin.file:
-        dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
+        path: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
         state: absent
 
-    - name: Ensure Semaphore base path is files deleted (make sure to delete node data)
+    - name: Ensure Semaphore path does not exist
       ansible.builtin.file:
         path: "{{ semaphore_base_path }}"
         state: absent
