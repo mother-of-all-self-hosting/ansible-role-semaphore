@@ -28,17 +28,3 @@
   tags:
     - setup-all
     - setup-semaphore
-
-- block:
-    - when: semaphore_enabled | bool
-      ansible.builtin.include_tasks: "{{ role_path }}/tasks/add_users_auto.yml"
-  tags:
-    - ensure-semaphore-users-created
-    - ensure-users-created
-
-- block:
-    - when: semaphore_enabled | bool
-      ansible.builtin.include_tasks: "{{ role_path }}/tasks/add_user_manual.yml"
-  tags:
-    - semaphore-add-user
-    - semaphore-add-admin
