@@ -1,14 +1,18 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
 
-- block:
-    - when: semaphore_enabled | bool
+- name: Perform Semaphore installation tasks
+  block:
+    - name: Validate Semaphore configuration
+      when: semaphore_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
 
-    - when: semaphore_enabled | bool
+    - name: Install Semaphore
+      when: semaphore_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
   tags:
     - setup-all
@@ -16,8 +20,10 @@
     - install-all
     - install-semaphore
 
-- block:
-    - when: not semaphore_enabled | bool
+- name: Perform Semaphore uninstallation tasks
+  block:
+    - name: Uninstall Semaphore
+      when: not semaphore_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
   tags:
     - setup-all
