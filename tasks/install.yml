@@ -6,18 +6,17 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Ensure Semaphore path exists
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: "{{ semaphore_uid }}"
     group: "{{ semaphore_gid }}"
   with_items:
-    - {path: "{{ semaphore_base_path }}", when: true}
-    - {path: "{{ semaphore_config_path }}", when: true}
-    - {path: "{{ semaphore_dyn_config_path }}", when: true}
+    - { path: "{{ semaphore_base_path }}", when: true }
+    - { path: "{{ semaphore_config_path }}", when: true }
+    - { path: "{{ semaphore_dyn_config_path }}", when: true }
     - path: "{{ semaphore_customized_container_src_path }}"
       state: directory
       when: "{{ semaphore_container_image_customizations_enabled }}"
@@ -26,12 +25,12 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: "{{ semaphore_uid }}"
     group: "{{ semaphore_gid }}"
   with_items:
-    - {path: "{{ semaphore_data_path }}", when: true}
-    - {path: "{{ semaphore_playbook_path }}", when: true}
+    - { path: "{{ semaphore_data_path }}", when: true }
+    - { path: "{{ semaphore_playbook_path }}", when: true }
 
 - name: Ensure Semaphore support files installed
   ansible.builtin.template:
@@ -39,7 +38,7 @@
     dest: "{{ semaphore_config_path }}/{{ item }}"
     owner: "{{ semaphore_uid }}"
     group: "{{ semaphore_gid }}"
-    mode: 0640
+    mode: "0640"
   with_items:
     - env
     - labels
@@ -56,7 +55,8 @@
   delay: "{{ devture_playbook_help_container_retries_delay }}"
   until: result is not failed
 
-- when: "semaphore_container_image_customizations_enabled | bool"
+- name: Run if container image customizations are enabled
+  when: "semaphore_container_image_customizations_enabled | bool"
   block:
     - name: Ensure customizations Dockerfile is created
       ansible.builtin.template:
@@ -64,7 +64,7 @@
         dest: "{{ semaphore_customized_container_src_path }}/Dockerfile"
         owner: "{{ semaphore_uid }}"
         group: "{{ semaphore_gid }}"
-        mode: 0640
+        mode: "0640"
       register: semaphore_container_image_customizations_dockerfile_result
 
     - name: Ensure customized container image for Semaphore is built
@@ -88,4 +88,4 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/semaphore.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
-    mode: 0644
+    mode: "0644"
