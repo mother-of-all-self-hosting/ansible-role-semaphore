@@ -23,14 +23,14 @@
 
 - name: Ensure Semaphore data paths exist
   ansible.builtin.file:
-    path: "{{ item.path }}"
+    path: "{{ item }}"
     state: directory
     mode: "0755"
     owner: "{{ semaphore_uid }}"
     group: "{{ semaphore_gid }}"
   with_items:
-    - { path: "{{ semaphore_data_path }}", when: true }
-    - { path: "{{ semaphore_playbook_path }}", when: true }
+    - "{{ semaphore_data_path }}"
+    - "{{ semaphore_playbook_path }}"
 
 - name: Ensure Semaphore support files installed
   ansible.builtin.template:
