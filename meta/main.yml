@@ -1,8 +1,9 @@
 ---
 galaxy_info:
-  role_name: semaphore
   author: Julian-Samuel Gebühr
   company: Hyteck
+  role_name: semaphore
+  namespace: mash
   description: Ansible role to install semaphore, a responsive web UI for running Ansible playbooks.
   platforms:
     - name: Debian
