@@ -11,6 +11,7 @@
       Please change your configuration to rename the variable (`{{ item.old }}` -> `{{ item.new }}`).
   when: "item.old in vars"
   with_items:
+    - { "old": "semaphore_database_host", "new": "semaphore_database_hostname" }
     - { "old": "semaphore_env_path", "new": "<removed>" }
     - { "old": "semaphore_environment_variables_extension", "new": "semaphore_environment_variables_additional_variables" }
 

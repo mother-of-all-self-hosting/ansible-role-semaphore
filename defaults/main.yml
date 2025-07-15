@@ -209,7 +209,7 @@ semaphore_admin_password: ''
 semaphore_admin_name: ''
 semaphore_admin_email: ''
 
-semaphore_database_host: ''
+semaphore_database_hostname: ''
 semaphore_database_port: 5432
 semaphore_database_name: semaphore
 semaphore_database_username: semaphore
