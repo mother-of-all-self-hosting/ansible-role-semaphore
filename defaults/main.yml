@@ -119,7 +119,7 @@ semaphore_container_labels_traefik_tls: "{{ semaphore_container_labels_traefik_e
 semaphore_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
 # Controls which additional headers to attach to all HTTP requests.
-# To add your own custom request headers, use `semaphore_container_labels_traefik_additional_response_headers_custom`
+# To add your own custom request headers, use `semaphore_container_labels_traefik_additional_request_headers_custom`
 semaphore_container_labels_traefik_additional_request_headers: "{{ semaphore_container_labels_traefik_additional_request_headers_auto | combine(semaphore_container_labels_traefik_additional_request_headers_custom) }}"
 semaphore_container_labels_traefik_additional_request_headers_auto: {}
 semaphore_container_labels_traefik_additional_request_headers_custom: {}
