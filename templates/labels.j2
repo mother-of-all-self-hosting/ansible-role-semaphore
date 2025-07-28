@@ -1,15 +1,29 @@
 {#
 SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
+SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 #}
 
 {% if semaphore_container_labels_traefik_enabled %}
+traefik.enable=true
+
 {% if semaphore_container_labels_traefik_docker_network %}
 traefik.docker.network={{ semaphore_container_labels_traefik_docker_network }}
 {% endif %}
 
 {% set middlewares = [] %}
+
+{% if semaphore_container_labels_traefik_path_prefix != '/' %}
+traefik.http.middlewares.{{ semaphore_identifier }}-slashless-redirect.redirectregex.regex=^({{ semaphore_container_labels_traefik_path_prefix | quote }})$
+traefik.http.middlewares.{{ semaphore_identifier }}-slashless-redirect.redirectregex.replacement=${1}/
+{% set middlewares = middlewares + [semaphore_identifier + '-slashless-redirect'] %}
+{% endif %}
+
+{% if semaphore_container_labels_traefik_path_prefix != '/' %}
+traefik.http.middlewares.{{ semaphore_identifier }}-strip-prefix.stripprefix.prefixes={{ semaphore_container_labels_traefik_path_prefix }}
+{% set middlewares = middlewares + [semaphore_identifier + '-strip-prefix'] %}
+{% endif %}
 
 {% if semaphore_container_labels_traefik_additional_request_headers.keys() | length > 0 %}
 {% for name, value in semaphore_container_labels_traefik_additional_request_headers.items() %}
@@ -25,21 +39,21 @@ traefik.http.middlewares.{{ semaphore_identifier }}-add-response-headers.headers
 {% set middlewares = middlewares + [semaphore_identifier + '-add-response-headers'] %}
 {% endif %}
 
-traefik.enable=true
-{% endif %}
-traefik.http.routers.{{ semaphore_identifier }}.rule=Host("{{ semaphore_hostname }}")
+traefik.http.routers.{{ semaphore_identifier }}.rule={{ semaphore_container_labels_traefik_rule }}
 {% if semaphore_container_labels_traefik_priority | int > 0 %}
 traefik.http.routers.{{ semaphore_identifier }}.priority={{ semaphore_container_labels_traefik_priority }}
 {% endif %}
+traefik.http.routers.{{ semaphore_identifier }}.service={{ semaphore_identifier }}
 {% if middlewares | length > 0 %}
 traefik.http.routers.{{ semaphore_identifier }}.middlewares={{ middlewares | join(',') }}
 {% endif %}
-traefik.http.routers.{{ semaphore_identifier }}.service={{ semaphore_identifier }}
 traefik.http.routers.{{ semaphore_identifier }}.entrypoints={{ semaphore_container_labels_traefik_entrypoints }}
 traefik.http.routers.{{ semaphore_identifier }}.tls={{ semaphore_container_labels_traefik_tls | to_json }}
 {% if semaphore_container_labels_traefik_tls %}
 traefik.http.routers.{{ semaphore_identifier }}.tls.certResolver={{ semaphore_container_labels_traefik_tls_certResolver }}
 {% endif %}
+
 traefik.http.services.{{ semaphore_identifier }}.loadbalancer.server.port={{ semaphore_container_http_port }}
+{% endif %}
 
 {{ semaphore_container_labels_additional_labels }}

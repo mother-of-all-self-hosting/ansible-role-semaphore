@@ -29,6 +29,8 @@ semaphore_gid: ''
 # The hostname at which Semaphore is served.
 semaphore_hostname: ''
 
+semaphore_path_prefix: /
+
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
 
 # semaphore_container_image_customizations_enabled controls whether a customized Semaphore image will be built.
@@ -111,10 +113,14 @@ semaphore_container_additional_networks_custom: []
 # See `../templates/labels.j2` for details.
 #
 # To inject your own other container labels, see `semaphore_container_labels_additional_labels`.
-semaphore_container_labels_traefik_enabled: false
-semaphore_container_labels_traefik_docker_network: ""
-semaphore_container_labels_traefik_entrypoints: web-secure
+semaphore_container_labels_traefik_enabled: true
+semaphore_container_labels_traefik_docker_network: "{{ semaphore_container_network }}"
+semaphore_container_labels_traefik_hostname: "{{ semaphore_hostname }}"
+# The path prefix must either be `/` or not end with a slash (e.g. `/semaphore`).
+semaphore_container_labels_traefik_path_prefix: "{{ semaphore_path_prefix }}"
+semaphore_container_labels_traefik_rule: "Host(`{{ semaphore_container_labels_traefik_hostname }}`){% if semaphore_container_labels_traefik_path_prefix != '/' %} && PathPrefix(`{{ semaphore_container_labels_traefik_path_prefix }}`){% endif %}"
 semaphore_container_labels_traefik_priority: 0
+semaphore_container_labels_traefik_entrypoints: web-secure
 semaphore_container_labels_traefik_tls: "{{ semaphore_container_labels_traefik_entrypoints != 'web' }}"
 semaphore_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
