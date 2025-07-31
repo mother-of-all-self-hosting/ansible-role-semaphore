@@ -211,6 +211,7 @@ semaphore_systemd_wanted_services_list: []
 
 semaphore_username: 'semaphore'
 
+semaphore_admin_username: admin
 semaphore_admin_password: ''
 semaphore_admin_name: ''
 semaphore_admin_email: ''
