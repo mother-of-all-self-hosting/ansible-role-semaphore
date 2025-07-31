@@ -11,11 +11,14 @@
       Please change your configuration to rename the variable (`{{ item.old }}` -> `{{ item.new }}`).
   when: "lookup('ansible.builtin.varnames', ('^' + item.old + '$'), wantlist=True) | length > 0"
   with_items:
-    - { "old": "semaphore_database_host", "new": "semaphore_database_hostname" }
     - { "old": "semaphore_env_path", "new": "<removed>" }
     - { "old": "semaphore_dyn_config_path", "new": "<removed>" }
     - { "old": "semaphore_playbook_path", "new": "<removed>" }
     - { "old": "semaphore_container_playbook_path", "new": "<removed>" }
+    - { "old": "semaphore_database_username", "new": "<Replace with semaphore_database_mysql_username or semaphore_database_postgres_username>" }
+    - { "old": "semaphore_database_password", "new": "<Replace with semaphore_database_mysql_password or semaphore_database_postgres_password>" }
+    - { "old": "semaphore_database_port", "new": "<Replace with semaphore_database_postgres_port or semaphore_database_mysql_port>" }
+    - { "old": "semaphore_database_host", "new": "<Replace with semaphore_database_postgres_hostname or semaphore_database_mysql_hostname>" }
     - { "old": "semaphore_environment_variables_extension", "new": "semaphore_environment_variables_additional_variables" }
 
 - name: Fail if required Semaphore settings not defined
@@ -34,6 +37,7 @@
     - semaphore_admin_name
     - semaphore_admin_email
     - semaphore_access_key_encryption
+    - semaphore_database_dialect
 
 - name: Run if Traefik is enabled
   when: semaphore_container_labels_traefik_enabled | bool
