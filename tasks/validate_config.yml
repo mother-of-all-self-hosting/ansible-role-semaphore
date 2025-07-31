@@ -13,6 +13,9 @@
   with_items:
     - { "old": "semaphore_database_host", "new": "semaphore_database_hostname" }
     - { "old": "semaphore_env_path", "new": "<removed>" }
+    - { "old": "semaphore_dyn_config_path", "new": "<removed>" }
+    - { "old": "semaphore_playbook_path", "new": "<removed>" }
+    - { "old": "semaphore_container_playbook_path", "new": "<removed>" }
     - { "old": "semaphore_environment_variables_extension", "new": "semaphore_environment_variables_additional_variables" }
 
 - name: Fail if required Semaphore settings not defined

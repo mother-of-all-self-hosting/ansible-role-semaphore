@@ -38,8 +38,9 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --env-file={{ semaphore_base_path }}/env \
       --label-file={{ semaphore_base_path }}/labels \
       --mount type=bind,src={{ semaphore_base_path }}/passwd,dst=/etc/passwd,ro \
-      --mount type=bind,src={{ semaphore_dyn_config_path }},dst=/etc/semaphore \
-      --mount type=bind,src={{ semaphore_playbook_path }},dst={{ semaphore_container_playbook_path }} \
+      --mount type=bind,src={{ semaphore_data_path }},dst=/var/lib/semaphore \
+      --mount type=bind,src={{ semaphore_config_path }},dst=/etc/semaphore \
+      --mount type=bind,src={{ semaphore_tmp_path }},dst=/tmp/semaphore \
       --tmpfs=/tmp:rw,noexec,nosuid,size=100m \
       {{ semaphore_container_image_final }}
 

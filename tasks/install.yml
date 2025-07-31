@@ -16,7 +16,6 @@
   with_items:
     - { path: "{{ semaphore_base_path }}", when: true }
     - { path: "{{ semaphore_config_path }}", when: true }
-    - { path: "{{ semaphore_dyn_config_path }}", when: true }
     - path: "{{ semaphore_customized_container_src_path }}"
       state: directory
       when: "{{ semaphore_container_image_customizations_enabled }}"
@@ -30,7 +29,7 @@
     group: "{{ semaphore_gid }}"
   with_items:
     - "{{ semaphore_data_path }}"
-    - "{{ semaphore_playbook_path }}"
+    - "{{ semaphore_tmp_path }}"
 
 - name: Ensure Semaphore support files installed
   ansible.builtin.template:
