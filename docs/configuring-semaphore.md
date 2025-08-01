@@ -152,7 +152,7 @@ Take a look at:
 
 - [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `semaphore_environment_variables_additional_variables` variable
 
-See its [environment variables](https://semaphore.org/docs/guide/essentials/configuration) for a complete list of Semaphore UI's config options that you could put in `semaphore_environment_variables_additional_variables`.
+See its [environment variables](https://docs.semaphoreui.com/administration-guide/configuration/) for a complete list of Semaphore UI's config options that you could put in `semaphore_environment_variables_additional_variables`.
 
 ## Installing
 
