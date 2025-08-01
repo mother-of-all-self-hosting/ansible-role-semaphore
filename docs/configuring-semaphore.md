@@ -18,11 +18,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Setting up Semaphore UI
 
-This is an [Ansible](https://www.ansible.com/) role which installs [Semaphore UI](https://yourls.org) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
+This is an [Ansible](https://www.ansible.com/) role which installs [Semaphore UI](https://semaphoreui.com) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
-Semaphore UI is a set of PHP scripts that will allow you to run Your Own URL Shortener, on your server.
+Semaphore UI is a modern UI for Ansible, Terraform/OpenTofu/Terragrunt, PowerShell and other DevOps tools.
 
-See the project's [documentation](https://yourls.org/docs) to learn what Semaphore UI does and why it might be useful to you.
+See the project's [documentation](https://docs.semaphoreui.com/) to learn what Semaphore UI does and why it might be useful to you.
 
 ## Prerequisites
 
