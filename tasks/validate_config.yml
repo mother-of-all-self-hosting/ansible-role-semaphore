@@ -24,6 +24,8 @@
     - semaphore_uid
     - semaphore_gid
     - semaphore_hostname
+    - semaphore_path_prefix
+    - semaphore_container_network
     - semaphore_admin_password
     - semaphore_admin_name
     - semaphore_admin_email
