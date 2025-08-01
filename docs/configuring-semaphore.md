@@ -172,14 +172,8 @@ You can open the page with a web browser to log in to the instance. See [this of
 
 ## Troubleshooting
 
+[The official documentation](https://docs.semaphoreui.com/faq/troubleshooting/) is available for troubleshooting.
+
 ### Check the service's logs
 
 You can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running `journalctl -fu semaphore` (or how you/your playbook named the service, e.g. `mash-semaphore`).
-
-#### Enable debug mode
-
-If you want to enable debug mode, add the following configuration to your `vars.yml` file and re-run the playbook:
-
-```yaml
-semaphore_environment_variable_debug: true
-```
