@@ -104,6 +104,20 @@ semaphore_access_key_encryption: YOUR_SECRET_KEY_HERE
 >[!NOTE]
 > Other type of values such as one generated with `pwgen -s 64 1` does not work.
 
+### Enable 2FA authentication with TOTP (optional)
+
+You can optionally enable two-factor authentication with TOTP by adding the following configuration to your `vars.yml` file:
+
+```yaml
+semaphore_environment_variables_totp_enabled: true
+```
+
+To allow a user to reset TOTP with a recovery code, add the following configuration as well:
+
+```yaml
+semaphore_environment_variables_totp_allow_recovery: true
+```
+
 ### Extending the configuration
 
 There are some additional things you may wish to configure about the component.
