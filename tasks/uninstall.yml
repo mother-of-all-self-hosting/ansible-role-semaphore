@@ -25,6 +25,15 @@
         path: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
         state: absent
 
+    - name: Ensure Semaphore support files do not exist
+      ansible.builtin.file:
+        path: "{{ semaphore_base_path }}/{{ item }}"
+        state: absent
+      with_items:
+        - env
+        - labels
+        - passwd
+
     - name: Ensure Semaphore container network does not exist via community.docker.docker_network
       when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
       community.docker.docker_network:
@@ -40,7 +49,38 @@
       register: network_deletion_result
       changed_when: semaphore_container_network in network_deletion_result.stdout
 
-    - name: Ensure Semaphore path does not exist
-      ansible.builtin.file:
-        path: "{{ semaphore_base_path }}"
-        state: absent
+- name: Check existence of Semaphore local data path
+  ansible.builtin.stat:
+    path: "{{ semaphore_data_path }}"
+  register: semaphore_data_path_stat
+
+# We just want to notify the user. Deleting data is too destructive.
+- name: Notify if Semaphore local data remains
+  when: semaphore_data_path_stat.stat.exists | bool
+  ansible.builtin.set_fact:
+    devture_playbook_runtime_messages_list: |
+      {{
+        devture_playbook_runtime_messages_list | default([])
+        +
+        [
+          "Note: As the local Semaphore instance has been removed, some old data remains in `{{ semaphore_data_path }}`. Feel free to delete it."
+        ]
+      }}
+
+- name: Check existence of Semaphore config path
+  ansible.builtin.stat:
+    path: "{{ semaphore_config_path }}"
+  register: semaphore_config_path_stat
+
+# We just want to notify the user. Deleting data is too destructive.
+- name: Notify if Semaphore config remains
+  when: semaphore_config_path_stat.stat.exists | bool
+  ansible.builtin.set_fact:
+    devture_playbook_runtime_messages_list: |
+      {{
+        devture_playbook_runtime_messages_list | default([])
+        +
+        [
+          "Note: As the local Semaphore instance has been removed, some config data remains in `{{ semaphore_config_path }}`. Feel free to delete it."
+        ]
+      }}
