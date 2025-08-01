@@ -166,11 +166,9 @@ If you use the MASH playbook, the shortcut commands with the [`just` program](ht
 
 ## Usage
 
-After running the command for installation, Semaphore UI's admin UI is available at the specified hostname with `/admin/` such as `example.com/admin/`.
+After running the command for installation, Semaphore UI becomes available at the specified hostname like `https://example.com`.
 
-First, open the page with a web browser to complete installation on the server by clicking "Install Semaphore UI" button. After that, click the anchor link "Semaphore UI Administration Page" to log in with the username (`semaphore_environment_variable_user`) and password (`semaphore_environment_variable_pass`).
-
-The help file is available at `example.com/readme.html`.
+You can open the page with a web browser to log in to the instance. See [this official guide](https://docs.semaphoreui.com/user-guide/projects/) to get started.
 
 ## Troubleshooting
 
