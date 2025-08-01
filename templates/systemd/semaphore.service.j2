@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 #}
 
 [Unit]
-Description=Semaphore UI: Responsive web UI for running Ansible playbooks ({{ semaphore_identifier }})
+Description=Semaphore UI ({{ semaphore_identifier }})
 {% for service in semaphore_systemd_required_services_list %}
 Requires={{ service }}
 After={{ service }}
