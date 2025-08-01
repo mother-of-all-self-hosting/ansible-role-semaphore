@@ -26,11 +26,9 @@ See the project's [documentation](https://docs.semaphoreui.com/) to learn what S
 
 ## Prerequisites
 
-To run a Semaphore UI instance it is necessary to prepare a [MySQL](https://www.mysql.com/) compatible database server.
+To run a Semaphore UI instance it is necessary to prepare a [Postgres](https://www.postgresql.org/) or [MySQL](https://www.mysql.com/) compatible database server.
 
-If you are looking for an Ansible role for [MariaDB](https://mariadb.org/), you can check out [this role (ansible-role-mariadb)](https://github.com/mother-of-all-self-hosting/ansible-role-mariadb) maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team.
-
-See [this section](https://yourls.org/docs#server-requirements) on the official documentation to check server requirements.
+If you are looking for Ansible roles for them, you can check out [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres) and [ansible-role-mariadb](https://github.com/mother-of-all-self-hosting/ansible-role-mariadb), both of which are maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team.
 
 ## Adjusting the playbook configuration
 
