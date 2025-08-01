@@ -241,6 +241,10 @@ semaphore_environment_variables_email_username: ''
 semaphore_environment_variables_email_password: ''
 semaphore_environment_variables_email_secure: false
 
+# Control if host key checking by the underlying connection plugin Ansible uses to connect to the host is enabled
+# See: https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_HOST_KEY_CHECKING
+semaphore_environment_variables_ansible_host_key_checking: false
+
 # Additional environment variables to pass to the Semaphore container.
 # You can use this to further influence the default configuration.
 #
