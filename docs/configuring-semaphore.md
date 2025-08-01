@@ -93,6 +93,17 @@ semaphore_admin_email: ADMIN_EMAIL_ADDRESS_HERE
 
 Generating a strong password (e.g. `pwgen -s 64 1`) is recommended for `semaphore_admin_password`.
 
+### Set a string for encrypting access keys
+
+You also need to specify a string used for encrypting access keys in database. To do so, add the following configuration to your `vars.yml` file. The value can be generated with `head -c32 /dev/urandom | base64` or in another way.
+
+```yaml
+semaphore_access_key_encryption: YOUR_SECRET_KEY_HERE
+```
+
+>[!NOTE]
+> Other type of values such as one generated with `pwgen -s 64 1` does not work.
+
 ### Extending the configuration
 
 There are some additional things you may wish to configure about the component.
