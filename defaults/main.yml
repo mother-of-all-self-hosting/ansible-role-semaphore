@@ -25,14 +25,14 @@ semaphore_version: 2.15.4
 semaphore_uid: ''
 semaphore_gid: ''
 
-# The hostname at which Semaphore is served.
+# The hostname at which Semaphore UI is served.
 semaphore_hostname: ''
 
 semaphore_path_prefix: /
 
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
 
-# semaphore_container_image_customizations_enabled controls whether a customized Semaphore image will be built.
+# semaphore_container_image_customizations_enabled controls whether a customized Semaphore UI image will be built.
 #
 # We toggle this variable to `true` when certain features which require a custom build are enabled.
 # Feel free to toggle this to `true` yourself and specify build steps in `semaphore_container_image_customizations_dockerfile_body_custom`.
@@ -56,7 +56,7 @@ semaphore_container_image_customizations_enabled: |
 semaphore_container_image_customizations_just_installation_enabled: false
 semaphore_container_image_customizations_just_packages: ['just']
 
-# A list of packages to install in the customized Semaphore container image.
+# A list of packages to install in the customized Semaphore UI container image.
 # To add your own, use `semaphore_container_image_customizations_packages_to_install_custom`
 semaphore_container_image_customizations_packages_to_install: "{{ (semaphore_container_image_customizations_packages_to_install_auto + semaphore_container_image_customizations_packages_to_install_custom) | unique }}"
 semaphore_container_image_customizations_packages_to_install_auto: |
@@ -66,7 +66,7 @@ semaphore_container_image_customizations_packages_to_install_auto: |
 semaphore_container_image_customizations_packages_to_install_custom: []
 
 # semaphore_container_image_customizations_dockerfile_body_custom contains your custom Dockerfile steps
-# for building your customized Semaphore image based on the original (upstream) image (`semaphore_container_image`).
+# for building your customized Semaphore UI image based on the original (upstream) image (`semaphore_container_image`).
 # A `FROM ...` clause is included automatically so you don't have to.
 #
 # Example:
@@ -76,12 +76,12 @@ semaphore_container_image_customizations_packages_to_install_custom: []
 #  RUN echo 'You do NOT need to include a FROM clause yourself.'
 semaphore_container_image_customizations_dockerfile_body_custom: ''
 
-# semaphore_container_image_customized is the name of the locally built Semaphore image
-# which adds various customizations on top of the original (upstream) Semaphore image.
+# semaphore_container_image_customized is the name of the locally built Semaphore UI image
+# which adds various customizations on top of the original (upstream) Semaphore UI image.
 # This image will be based on the upstream `semaphore_container_image` image, only if `semaphore_container_image_customizations_enabled: true`.
 semaphore_container_image_customized: "localhost/semaphore:{{ semaphore_container_image_tag }}-customized"
 
-# semaphore_container_image_final holds the name of the Semaphore image to run depending on whether or not customizations are enabled.
+# semaphore_container_image_final holds the name of the Semaphore UI image to run depending on whether or not customizations are enabled.
 semaphore_container_image_final: "{{ semaphore_container_image_customized if semaphore_container_image_customizations_enabled else semaphore_container_image }}"
 
 semaphore_container_image_tag: "v{{ semaphore_version }}"
@@ -90,7 +90,7 @@ semaphore_container_image_registry_prefix_upstream: "{{ semaphore_container_imag
 semaphore_container_image_registry_prefix_upstream_default: docker.io/
 semaphore_container_image_force_pull: "{{ semaphore_container_image.endswith(':latest') }}"
 
-# Controls whether the Semaphore container exposes its HTTP port (as defined by `semaphore_container_http_port`).
+# Controls whether the Semaphore UI container exposes its HTTP port (as defined by `semaphore_container_http_port`).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:8731"), or empty string to not expose.
 semaphore_container_http_host_bind_port: ""
@@ -199,13 +199,13 @@ semaphore_floc_optout_enabled: true
 # See: `semaphore_http_header_strict_transport_security`
 semaphore_hsts_preload_enabled: false
 
-# List of systemd services that the Semaphore systemd service depends on
+# List of systemd services that the Semaphore UI systemd service depends on
 semaphore_systemd_required_services_list: "{{ semaphore_systemd_required_services_list_default + semaphore_systemd_required_services_list_auto + semaphore_systemd_required_services_list_custom }}"
 semaphore_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 semaphore_systemd_required_services_list_auto: []
 semaphore_systemd_required_services_list_custom: []
 
-# List of systemd services that the Semaphore systemd service wants
+# List of systemd services that the Semaphore UI systemd service wants
 semaphore_systemd_wanted_services_list: []
 
 # Specify username for passwd file
@@ -235,7 +235,7 @@ semaphore_admin_password: ''
 semaphore_admin_name: ''
 semaphore_admin_email: ''
 
-# Specify the path to serve Semaphore.
+# Specify the path to serve Semaphore UI.
 # Do not add a trailing /.
 semaphore_environment_variables_web_root: ''
 
@@ -260,7 +260,7 @@ semaphore_environment_variables_email_secure: false
 # See: https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_HOST_KEY_CHECKING
 semaphore_environment_variables_ansible_host_key_checking: false
 
-# Additional environment variables to pass to the Semaphore container.
+# Additional environment variables to pass to the Semaphore UI container.
 # You can use this to further influence the default configuration.
 #
 # Example:

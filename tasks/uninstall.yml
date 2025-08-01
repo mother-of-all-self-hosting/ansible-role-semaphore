@@ -5,27 +5,27 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- name: Check existence of Semaphore systemd service
+- name: Check existence of Semaphore UI systemd service
   ansible.builtin.stat:
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
   register: semaphore_service_stat
 
-- name: Uninstall Semaphore systemd services and files
+- name: Uninstall Semaphore UI systemd services and files
   when: semaphore_service_stat.stat.exists | bool
   block:
-    - name: Ensure Semaphore systemd service is stopped
+    - name: Ensure Semaphore UI systemd service is stopped
       ansible.builtin.service:
         name: "{{ semaphore_identifier }}"
         state: stopped
         enabled: false
         daemon_reload: true
 
-    - name: Ensure Semaphore systemd service does not exist
+    - name: Ensure Semaphore UI systemd service does not exist
       ansible.builtin.file:
         path: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
         state: absent
 
-    - name: Ensure Semaphore support files do not exist
+    - name: Ensure Semaphore UI support files do not exist
       ansible.builtin.file:
         path: "{{ semaphore_base_path }}/{{ item }}"
         state: absent
@@ -34,18 +34,18 @@
         - labels
         - passwd
 
-    - name: Ensure Semaphore image source files path does not exist
+    - name: Ensure Semaphore UI image source files path does not exist
       ansible.builtin.file:
         path: "{{ semaphore_customized_container_src_path }}"
         state: absent
 
-    - name: Ensure Semaphore container network does not exist via community.docker.docker_network
+    - name: Ensure Semaphore UI container network does not exist via community.docker.docker_network
       when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
       community.docker.docker_network:
         name: "{{ semaphore_container_network }}"
         state: absent
 
-    - name: Ensure Semaphore container network does not exist via ansible.builtin.command
+    - name: Ensure Semaphore UI container network does not exist via ansible.builtin.command
       when: devture_systemd_docker_base_container_network_creation_method == 'command'
       ansible.builtin.command:
         cmd: >-
@@ -54,13 +54,13 @@
       register: network_deletion_result
       changed_when: semaphore_container_network in network_deletion_result.stdout
 
-- name: Check existence of Semaphore local data path
+- name: Check existence of Semaphore UI local data path
   ansible.builtin.stat:
     path: "{{ semaphore_data_path }}"
   register: semaphore_data_path_stat
 
 # We just want to notify the user. Deleting data is too destructive.
-- name: Notify if Semaphore local data remains
+- name: Notify if Semaphore UI local data remains
   when: semaphore_data_path_stat.stat.exists | bool
   ansible.builtin.set_fact:
     devture_playbook_runtime_messages_list: |
@@ -68,17 +68,17 @@
         devture_playbook_runtime_messages_list | default([])
         +
         [
-          "Note: As the local Semaphore instance has been removed, some old data remains in `{{ semaphore_data_path }}`. Feel free to delete it."
+          "Note: As the local Semaphore UI instance has been removed, some old data remains in `{{ semaphore_data_path }}`. Feel free to delete it."
         ]
       }}
 
-- name: Check existence of Semaphore config path
+- name: Check existence of Semaphore UI config path
   ansible.builtin.stat:
     path: "{{ semaphore_config_path }}"
   register: semaphore_config_path_stat
 
 # We just want to notify the user. Deleting data is too destructive.
-- name: Notify if Semaphore config remains
+- name: Notify if Semaphore UI config remains
   when: semaphore_config_path_stat.stat.exists | bool
   ansible.builtin.set_fact:
     devture_playbook_runtime_messages_list: |
@@ -86,6 +86,6 @@
         devture_playbook_runtime_messages_list | default([])
         +
         [
-          "Note: As the local Semaphore instance has been removed, some config data remains in `{{ semaphore_config_path }}`. Feel free to delete it."
+          "Note: As the local Semaphore UI instance has been removed, some config data remains in `{{ semaphore_config_path }}`. Feel free to delete it."
         ]
       }}

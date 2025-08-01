@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- name: Perform Semaphore installation tasks
+- name: Perform Semaphore UI installation tasks
   when: semaphore_enabled | bool
   tags:
     - setup-all
@@ -12,16 +12,16 @@
     - install-all
     - install-semaphore
   block:
-    - name: Validate Semaphore configuration
+    - name: Validate Semaphore UI configuration
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
-    - name: Install Semaphore
+    - name: Install Semaphore UI
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
 
-- name: Perform Semaphore uninstallation tasks
+- name: Perform Semaphore UI uninstallation tasks
   when: not semaphore_enabled | bool
   tags:
     - setup-all
     - setup-semaphore
   block:
-    - name: Uninstall Semaphore
+    - name: Uninstall Semaphore UI
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
