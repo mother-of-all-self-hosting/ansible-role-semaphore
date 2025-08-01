@@ -118,6 +118,32 @@ To allow a user to reset TOTP with a recovery code, add the following configurat
 semaphore_environment_variables_totp_allow_recovery: true
 ```
 
+### Configure the mailer
+
+You can configure a SMTP mailer by adding the following configuration to your `vars.yml` file as below (adapt to your needs):
+
+```yaml
+# Set the email address that emails will be sent from
+semaphore_environment_variables_email_sender: semahore@example.com
+
+# Set the hostname of the SMTP server
+semaphore_environment_variables_email_host: smtp.example.com
+
+# Set the port number of the SMTP server
+semaphore_environment_variables_email_port: ''
+
+# Set the username for the SMTP server
+semaphore_environment_variables_email_username: semahore@example.com
+
+# Set the password for the SMTP server
+semaphore_environment_variables_email_password: YOUR_PASSWORD_HERE
+
+# Set to true if SSL or TLS is used for communication with the SMTP server
+semaphore_environment_variables_email_secure: false
+```
+
+⚠️ **Note**: without setting an authentication method such as DKIM, SPF, and DMARC for your hostname, emails are most likely to be quarantined as spam at recipient's mail servers. If you have set up a mail server with the [MASH project's exim-relay Ansible role](https://github.com/mother-of-all-self-hosting/ansible-role-exim-relay), you can enable DKIM signing with it. Refer [its documentation](https://github.com/mother-of-all-self-hosting/ansible-role-exim-relay/blob/main/docs/configuring-exim-relay.md#enable-dkim-support-optional) for details.
+
 ### Extending the configuration
 
 There are some additional things you may wish to configure about the component.
