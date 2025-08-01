@@ -39,15 +39,15 @@ To enable Semaphore UI with this role, add the following configuration to your `
 ```yaml
 ########################################################################
 #                                                                      #
-# yourls                                                               #
+# semaphore                                                            #
 #                                                                      #
 ########################################################################
 
-yourls_enabled: true
+semaphore_enabled: true
 
 ########################################################################
 #                                                                      #
-# /yourls                                                              #
+# /semaphore                                                           #
 #                                                                      #
 ########################################################################
 ```
@@ -57,20 +57,20 @@ yourls_enabled: true
 To enable Semaphore UI you need to set the hostname as well. To do so, add the following configuration to your `vars.yml` file. Make sure to replace `example.com` with your own value.
 
 ```yaml
-yourls_hostname: "example.com"
+semaphore_hostname: "example.com"
 ```
 
 After adjusting the hostname, make sure to adjust your DNS records to point the domain to your server.
 
-**Note**: hosting Semaphore UI under a subpath (by configuring the `yourls_path_prefix` variable) does not seem to be possible due to Semaphore UI's technical limitations.
+**Note**: hosting Semaphore UI under a subpath (by configuring the `semaphore_path_prefix` variable) does not seem to be possible due to Semaphore UI's technical limitations.
 
 ### Set the admin username and password
 
 You also need to create an instance's user to access to the admin UI after installation. To create one, add the following configuration to your `vars.yml` file. Make sure to replace `YOUR_ADMIN_USERNAME_HERE` and `YOUR_ADMIN_PASSWORD_HERE`.
 
 ```yaml
-yourls_environment_variable_user: YOUR_ADMIN_USERNAME_HERE
-yourls_environment_variable_pass: YOUR_ADMIN_PASSWORD_HERE
+semaphore_environment_variable_user: YOUR_ADMIN_USERNAME_HERE
+semaphore_environment_variable_pass: YOUR_ADMIN_PASSWORD_HERE
 ```
 
 ### Mount a directory for loading data (optional)
@@ -80,7 +80,7 @@ By mounting a directory, it becomes possible to load plugins listed [on this lis
 To add the volume for the plugin directory, prepare a local directory on the host machine and add the following configuration to your `vars.yml` file, setting the directory path to `src`:
 
 ```yaml
-yourls_container_additional_volumes_custom:
+semaphore_container_additional_volumes_custom:
   - type: bind
     src: /path/on/the/host
     dst: /var/www/html/user/plugins
@@ -92,7 +92,7 @@ Make sure permissions and owner of the directory specified to `src` (the owner s
 After mounting the volume, move/copy the plugin to the `src` directory.
 
 >[!NOTE]
-> The [official image](https://hub.docker.com/_/yourls) does not provide any additional PHP extensions or other libraries, even if they are required by popular plugins. There are an infinite number of possible plugins, and they potentially require extension PHP supports for it. If you need additional PHP extensions, you'll need to create your own image.
+> The [official image](https://hub.docker.com/_/semaphore) does not provide any additional PHP extensions or other libraries, even if they are required by popular plugins. There are an infinite number of possible plugins, and they potentially require extension PHP supports for it. If you need additional PHP extensions, you'll need to create your own image.
 
 ### Extending the configuration
 
@@ -100,9 +100,9 @@ There are some additional things you may wish to configure about the component.
 
 Take a look at:
 
-- [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `yourls_environment_variables_additional_variables` variable
+- [`defaults/main.yml`](../defaults/main.yml) for some variables that you can customize via your `vars.yml` file. You can override settings (even those that don't have dedicated playbook variables) using the `semaphore_environment_variables_additional_variables` variable
 
-See its [environment variables](https://yourls.org/docs/guide/essentials/configuration) for a complete list of Semaphore UI's config options that you could put in `yourls_environment_variables_additional_variables`.
+See its [environment variables](https://semaphore.org/docs/guide/essentials/configuration) for a complete list of Semaphore UI's config options that you could put in `semaphore_environment_variables_additional_variables`.
 
 ## Installing
 
@@ -118,7 +118,7 @@ If you use the MASH playbook, the shortcut commands with the [`just` program](ht
 
 After running the command for installation, Semaphore UI's admin UI is available at the specified hostname with `/admin/` such as `example.com/admin/`.
 
-First, open the page with a web browser to complete installation on the server by clicking "Install Semaphore UI" button. After that, click the anchor link "Semaphore UI Administration Page" to log in with the username (`yourls_environment_variable_user`) and password (`yourls_environment_variable_pass`).
+First, open the page with a web browser to complete installation on the server by clicking "Install Semaphore UI" button. After that, click the anchor link "Semaphore UI Administration Page" to log in with the username (`semaphore_environment_variable_user`) and password (`semaphore_environment_variable_pass`).
 
 The help file is available at `example.com/readme.html`.
 
@@ -126,12 +126,12 @@ The help file is available at `example.com/readme.html`.
 
 ### Check the service's logs
 
-You can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running `journalctl -fu yourls` (or how you/your playbook named the service, e.g. `mash-yourls`).
+You can find the logs in [systemd-journald](https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html) by logging in to the server with SSH and running `journalctl -fu semaphore` (or how you/your playbook named the service, e.g. `mash-semaphore`).
 
 #### Enable debug mode
 
 If you want to enable debug mode, add the following configuration to your `vars.yml` file and re-run the playbook:
 
 ```yaml
-yourls_environment_variable_debug: true
+semaphore_environment_variable_debug: true
 ```
