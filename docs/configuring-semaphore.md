@@ -124,7 +124,7 @@ You can configure a SMTP mailer by adding the following configuration to your `v
 
 ```yaml
 # Set the email address that emails will be sent from
-semaphore_environment_variables_email_sender: semahore@example.com
+semaphore_environment_variables_email_sender: semaphore@example.com
 
 # Set the hostname of the SMTP server
 semaphore_environment_variables_email_host: smtp.example.com
@@ -133,7 +133,7 @@ semaphore_environment_variables_email_host: smtp.example.com
 semaphore_environment_variables_email_port: ''
 
 # Set the username for the SMTP server
-semaphore_environment_variables_email_username: semahore@example.com
+semaphore_environment_variables_email_username: semaphore@example.com
 
 # Set the password for the SMTP server
 semaphore_environment_variables_email_password: YOUR_PASSWORD_HERE
