@@ -62,37 +62,36 @@ semaphore_hostname: "example.com"
 
 After adjusting the hostname, make sure to adjust your DNS records to point the domain to your server.
 
-**Note**: hosting Semaphore UI under a subpath (by configuring the `semaphore_path_prefix` variable) does not seem to be possible due to Semaphore UI's technical limitations.
-
-### Set the admin username and password
-
-You also need to create an instance's user to access to the admin UI after installation. To create one, add the following configuration to your `vars.yml` file. Make sure to replace `YOUR_ADMIN_USERNAME_HERE` and `YOUR_ADMIN_PASSWORD_HERE`.
+To host Semaphore UI under a subpath, add the following configuration to your `vars.yml` file.
 
 ```yaml
-semaphore_environment_variable_user: YOUR_ADMIN_USERNAME_HERE
-semaphore_environment_variable_pass: YOUR_ADMIN_PASSWORD_HERE
+semaphore_environment_variables_web_root: "https://example.com/semaphore"
 ```
 
-### Mount a directory for loading data (optional)
+### Configure database
 
-By mounting a directory, it becomes possible to load plugins listed [on this list](https://github.com/Semaphore UI/awesome) with it.
-
-To add the volume for the plugin directory, prepare a local directory on the host machine and add the following configuration to your `vars.yml` file, setting the directory path to `src`:
+You can specify the database to use by setting a value to `semaphore_database_dialect` as below:
 
 ```yaml
-semaphore_container_additional_volumes_custom:
-  - type: bind
-    src: /path/on/the/host
-    dst: /var/www/html/user/plugins
-    options:
+semaphore_database_dialect: postgres
 ```
 
-Make sure permissions and owner of the directory specified to `src` (the owner should be set to `www-data`).
+Set `mysql` for MySQL compatible database and `bolt` for BoltDB, respectively.
 
-After mounting the volume, move/copy the plugin to the `src` directory.
+For other settings, check variables such as `semaphore_database_mysql_*` and `semaphore_database_postgres_*` on [`defaults/main.yml`](../defaults/main.yml) .
 
->[!NOTE]
-> The [official image](https://hub.docker.com/_/semaphore) does not provide any additional PHP extensions or other libraries, even if they are required by popular plugins. There are an infinite number of possible plugins, and they potentially require extension PHP supports for it. If you need additional PHP extensions, you'll need to create your own image.
+### Set details for the admin user
+
+You also need to create an instance's admin user. To create one, add the following configuration to your `vars.yml` file. Make sure to replace values with your own ones.
+
+```yaml
+semaphore_admin_username: ADMIN_USERNAME_HERE
+semaphore_admin_password: ADMIN_PASSWORD_HERE
+semaphore_admin_name: ADMIN_ACTUAL_NAME_HERE
+semaphore_admin_email: ADMIN_EMAIL_ADDRESS_HERE
+```
+
+Generating a strong password (e.g. `pwgen -s 64 1`) is recommended for `semaphore_admin_password`.
 
 ### Extending the configuration
 
