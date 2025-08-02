@@ -68,7 +68,7 @@
         devture_playbook_runtime_messages_list | default([])
         +
         [
-          "Note: As the local Semaphore UI instance has been removed, some old data remains in `{{ semaphore_data_path }}`. Feel free to delete it."
+          "Note: As the local Semaphore UI instance has been removed, some old data remains in `" + semaphore_data_path + "`. Feel free to delete it."
         ]
       }}
 
@@ -86,6 +86,6 @@
         devture_playbook_runtime_messages_list | default([])
         +
         [
-          "Note: As the local Semaphore UI instance has been removed, some config data remains in `{{ semaphore_config_path }}`. Feel free to delete it."
+          "Note: As the local Semaphore UI instance has been removed, some config data remains in `" + semaphore_config_path + "`. Feel free to delete it."
         ]
       }}
