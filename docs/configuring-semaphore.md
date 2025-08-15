@@ -76,7 +76,7 @@ You can specify the database to use by setting a value to `semaphore_database_di
 semaphore_database_dialect: postgres
 ```
 
-Set `mysql` for MySQL compatible database and `sqlite` for SQLite, respectively.
+Set `mysql` for MySQL compatible database. If neither of them is selected, Semaphore UI will default to [SQLite](https://www.sqlite.org/).
 
 >[!NOTE]
 > BoltDB support has been deprecated with [v2.16.7](https://github.com/semaphoreui/semaphore/releases/tag/v2.16.7).

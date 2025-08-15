@@ -211,6 +211,10 @@ semaphore_systemd_wanted_services_list: []
 # Specify username for passwd file
 semaphore_username: 'semaphore'
 
+# Specify database to use
+# Valid values: sqlite, mysql, postgres
+semaphore_database_dialect: sqlite
+
 semaphore_database_mysql_username: semaphore
 semaphore_database_mysql_password: ''
 semaphore_database_mysql_port: 3306
@@ -221,10 +225,6 @@ semaphore_database_postgres_port: 5432
 semaphore_database_postgres_hostname: ''
 
 semaphore_database_name: semaphore
-
-# Specify database to use
-# Valid values: sqlite, mysql, postgres
-semaphore_database_dialect: ''
 
 # Specify path to directory where cloned repositories and generated files are stored
 # Default: /tmp/semaphore
