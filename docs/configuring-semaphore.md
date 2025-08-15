@@ -26,9 +26,9 @@ See the project's [documentation](https://docs.semaphoreui.com/) to learn what S
 
 ## Prerequisites
 
-To run a Semaphore UI instance it is necessary to prepare a [Postgres](https://www.postgresql.org/) or [MySQL](https://www.mysql.com/) compatible database server.
+To run a Semaphore UI instance it is necessary to prepare a database. You can use a SQLite, [Postgres](https://www.postgresql.org/), or [MySQL](https://www.mysql.com/) compatible database server.
 
-If you are looking for Ansible roles for them, you can check out [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres) and [ansible-role-mariadb](https://github.com/mother-of-all-self-hosting/ansible-role-mariadb), both of which are maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team.
+If you are looking for Ansible roles for a Postgres or MySQL compatible server, you can check out [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres) and [ansible-role-mariadb](https://github.com/mother-of-all-self-hosting/ansible-role-mariadb), both of which are maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team.
 
 ## Adjusting the playbook configuration
 
@@ -76,7 +76,10 @@ You can specify the database to use by setting a value to `semaphore_database_di
 semaphore_database_dialect: postgres
 ```
 
-Set `mysql` for MySQL compatible database and `bolt` for BoltDB, respectively.
+Set `mysql` for MySQL compatible database and `sqlite` for SQLite, respectively.
+
+>[!NOTE]
+> BoltDB support has been deprecated with [v2.16.7](https://github.com/semaphoreui/semaphore/releases/tag/v2.16.7).
 
 For other settings, check variables such as `semaphore_database_mysql_*` and `semaphore_database_postgres_*` on [`defaults/main.yml`](../defaults/main.yml) .
 

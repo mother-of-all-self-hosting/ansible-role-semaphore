@@ -223,7 +223,7 @@ semaphore_database_postgres_hostname: ''
 semaphore_database_name: semaphore
 
 # Specify database to use
-# Valid values: mysql, postgres, bolt
+# Valid values: sqlite, mysql, postgres
 semaphore_database_dialect: ''
 
 # Specify path to directory where cloned repositories and generated files are stored
