@@ -15,6 +15,7 @@
     - { "old": "semaphore_dyn_config_path", "new": "<removed>" }
     - { "old": "semaphore_playbook_path", "new": "<removed>" }
     - { "old": "semaphore_container_playbook_path", "new": "<removed>" }
+    - { "old": "semaphore_database_dialect", "new": "semaphore_database_type" }
     - { "old": "semaphore_database_username", "new": "<Replace with semaphore_database_mysql_username or semaphore_database_postgres_username>" }
     - { "old": "semaphore_database_password", "new": "<Replace with semaphore_database_mysql_password or semaphore_database_postgres_password>" }
     - { "old": "semaphore_database_port", "new": "<Replace with semaphore_database_postgres_port or semaphore_database_mysql_port>" }
