@@ -70,10 +70,10 @@ semaphore_environment_variables_web_root: "https://example.com/semaphore"
 
 ### Configure database
 
-You can specify the database to use by setting a value to `semaphore_database_dialect` as below:
+You can specify the database to use by setting a value to `semaphore_database_type` as below:
 
 ```yaml
-semaphore_database_dialect: postgres
+semaphore_database_type: postgres
 ```
 
 Set `mysql` for MySQL compatible database. If neither of them is selected, Semaphore UI will default to SQLite.
