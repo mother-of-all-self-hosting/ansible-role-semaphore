@@ -206,7 +206,10 @@ semaphore_systemd_required_services_list_auto: []
 semaphore_systemd_required_services_list_custom: []
 
 # List of systemd services that the Semaphore UI systemd service wants
-semaphore_systemd_wanted_services_list: []
+semaphore_systemd_wanted_services_list: "{{ semaphore_systemd_wanted_services_list_default + semaphore_systemd_wanted_services_list_auto + semaphore_systemd_wanted_services_list_custom }}"
+semaphore_systemd_wanted_services_list_default: []
+semaphore_systemd_wanted_services_list_auto: []
+semaphore_systemd_wanted_services_list_custom: []
 
 # Specify username for passwd file
 semaphore_username: 'semaphore'
