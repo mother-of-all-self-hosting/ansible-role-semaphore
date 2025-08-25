@@ -1,5 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
-# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023 MASH project contributors
+# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2025 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -38,6 +40,30 @@
     - semaphore_admin_name
     - semaphore_admin_email
     - semaphore_access_key_encryption
+
+- name: Fail if Semaphore UI database type invalid
+  ansible.builtin.fail:
+    msg: >-
+      semaphore_database_type must be 'mysql', 'postgres' or 'sqlite'
+  when: "semaphore_database_type not in ['mysql', 'postgres', 'sqlite']"
+
+- name: Fail if required Semaphore UI + MySQL integration settings not defined
+  ansible.builtin.fail:
+    msg: >-
+      You need to define a required configuration setting (`{{ item }}`) when `semaphore_database_type` is `mysql`
+  when: "semaphore_database_type == 'mysql' and lookup('vars', item, default='') | string | length == 0"
+  with_items:
+    - semaphore_database_mysql_hostname
+    - semaphore_database_mysql_password
+
+- name: Fail if required Semaphore UI + Postgres integration settings not defined
+  ansible.builtin.fail:
+    msg: >-
+      You need to define a required configuration setting (`{{ item }}`) when `semaphore_database_type` is `postgres`
+  when: "semaphore_database_type == 'postgres' and lookup('vars', item, default='') | string | length == 0"
+  with_items:
+    - semaphore_database_postgres_hostname
+    - semaphore_database_postgres_password
 
 - name: Run if Traefik is enabled
   when: semaphore_container_labels_traefik_enabled | bool
