@@ -65,6 +65,15 @@
     - semaphore_database_postgres_hostname
     - semaphore_database_postgres_password
 
+- name: Fail if SMTP settings are missing (and SMTP is enabled by setting host)
+  ansible.builtin.fail:
+    msg: >-
+      You need to define a required configuration setting (`{{ item }}`) to correctly set up email via SMTP.
+  when: "semaphore_environment_variables_email_host !='' and lookup('vars', item, default='') | string | length == 0"
+  with_items:
+    - semaphore_environment_variables_email_port
+    - semaphore_environment_variables_email_sender
+
 - name: Run if Traefik is enabled
   when: semaphore_container_labels_traefik_enabled | bool
   block:
