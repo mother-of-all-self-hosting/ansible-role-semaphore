@@ -81,7 +81,7 @@ Set `mysql` for MySQL compatible database. If neither of them is selected, Semap
 >[!NOTE]
 > BoltDB support has been deprecated with [v2.16.7](https://github.com/semaphoreui/semaphore/releases/tag/v2.16.7).
 
-For other settings, check variables such as `semaphore_database_mysql_*` and `semaphore_database_postgres_*` on [`defaults/main.yml`](../defaults/main.yml) .
+For other settings, check variables such as `semaphore_database_mysql_*` and `semaphore_database_postgres_*` on [`defaults/main.yml`](../defaults/main.yml).
 
 ### Set details for the admin user
 
