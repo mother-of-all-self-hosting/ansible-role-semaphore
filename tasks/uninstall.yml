@@ -39,6 +39,11 @@
         path: "{{ semaphore_customized_container_src_path }}"
         state: absent
 
+    - name: Ensure Semaphore UI tmp path does not exist
+      ansible.builtin.file:
+        path: "{{ semaphore_tmp_path }}"
+        state: absent
+
     - name: Ensure Semaphore UI container network does not exist via community.docker.docker_network
       when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
       community.docker.docker_network:
