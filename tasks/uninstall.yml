@@ -44,6 +44,24 @@
         path: "{{ semaphore_tmp_path }}"
         state: absent
 
+    - name: Ensure Semaphore UI local config path does not exist if empty
+      ansible.builtin.command:
+        cmd: "rmdir {{ semaphore_config_path }}"
+      register: semaphore_config_path_deletion_result
+      changed_when: semaphore_config_path_deletion_result.rc == 0
+
+    - name: Ensure Semaphore UI local data path does not exist if empty
+      ansible.builtin.command:
+        cmd: "rmdir {{ semaphore_data_path }}"
+      register: semaphore_data_path_deletion_result
+      changed_when: semaphore_data_path_deletion_result.rc == 0
+
+    - name: Ensure Semaphore UI base path does not exist if empty
+      ansible.builtin.command:
+        cmd: "rmdir {{ semaphore_base_path }}"
+      register: semaphore_base_path_deletion_result
+      changed_when: semaphore_base_path_deletion_result.rc == 0
+
     - name: Ensure Semaphore UI container network does not exist via community.docker.docker_network
       when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
       community.docker.docker_network:

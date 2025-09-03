@@ -14,8 +14,8 @@ semaphore_enabled: true
 
 semaphore_identifier: semaphore
 semaphore_base_path: "/{{ semaphore_identifier }}"
-semaphore_data_path: "{{ semaphore_base_path }}/data"
 semaphore_config_path: "{{ semaphore_base_path }}/config"
+semaphore_data_path: "{{ semaphore_base_path }}/data"
 semaphore_tmp_path: "{{ semaphore_base_path }}/tmp" # mounted to /tmp/semaphore (`SEMAPHORE_PLAYBOOK_PATH`)
 semaphore_customized_container_src_path: "{{ semaphore_base_path }}/customized-container-src"
 
