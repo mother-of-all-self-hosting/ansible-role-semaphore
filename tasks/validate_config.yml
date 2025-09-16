@@ -23,6 +23,7 @@
     - { "old": "semaphore_database_port", "new": "<Replace with semaphore_database_postgres_port or semaphore_database_mysql_port>" }
     - { "old": "semaphore_database_host", "new": "<Replace with semaphore_database_postgres_hostname or semaphore_database_mysql_hostname>" }
     - { "old": "semaphore_environment_variables_extension", "new": "semaphore_environment_variables_additional_variables" }
+    - { "old": "semaphore_http_header_content_permission_policy", "new": "semaphore_http_header_permissions_policy" }
 
 - name: Fail if required Semaphore UI settings not defined
   ansible.builtin.fail:
