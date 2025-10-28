@@ -20,7 +20,7 @@ semaphore_tmp_path: "{{ semaphore_base_path }}/tmp" # mounted to /tmp/semaphore 
 semaphore_customized_container_src_path: "{{ semaphore_base_path }}/customized-container-src"
 
 # renovate: datasource=docker depName=semaphoreui/semaphore versioning=semver
-semaphore_version: 2.16.34
+semaphore_version: 2.16.36
 
 semaphore_uid: ''
 semaphore_gid: ''
