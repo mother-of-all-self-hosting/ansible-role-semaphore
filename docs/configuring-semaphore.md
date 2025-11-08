@@ -133,7 +133,7 @@ semaphore_environment_variables_email_sender: semaphore@example.com
 semaphore_environment_variables_email_host: smtp.example.com
 
 # Set the port number of the SMTP server
-semaphore_environment_variables_email_port: ''
+semaphore_environment_variables_email_port: ""
 
 # Set the username for the SMTP server
 semaphore_environment_variables_email_username: semaphore@example.com

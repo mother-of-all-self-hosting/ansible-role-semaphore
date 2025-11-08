@@ -22,11 +22,11 @@ semaphore_customized_container_src_path: "{{ semaphore_base_path }}/customized-c
 # renovate: datasource=docker depName=semaphoreui/semaphore versioning=semver
 semaphore_version: 2.16.45
 
-semaphore_uid: ''
-semaphore_gid: ''
+semaphore_uid: ""
+semaphore_gid: ""
 
 # The hostname at which Semaphore UI is served.
-semaphore_hostname: ''
+semaphore_hostname: ""
 
 semaphore_path_prefix: /
 
@@ -74,7 +74,7 @@ semaphore_container_image_customizations_packages_to_install_custom: []
 #  RUN echo 'This is a custom step for building the customized container image for semaphore.'
 #  RUN echo 'You can override semaphore_container_image_customizations_dockerfile_body_custom to add your own steps.'
 #  RUN echo 'You do NOT need to include a FROM clause yourself.'
-semaphore_container_image_customizations_dockerfile_body_custom: ''
+semaphore_container_image_customizations_dockerfile_body_custom: ""
 
 # semaphore_container_image_customized is the name of the locally built Semaphore UI image
 # which adds various customizations on top of the original (upstream) Semaphore UI image.
@@ -150,7 +150,7 @@ semaphore_container_labels_traefik_additional_response_headers_custom: {}
 # semaphore_container_labels_additional_labels: |
 #   my.label=1
 #   another.label="here"
-semaphore_container_labels_additional_labels: ''
+semaphore_container_labels_additional_labels: ""
 
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
@@ -219,13 +219,13 @@ semaphore_username: 'semaphore'
 semaphore_database_type: sqlite
 
 semaphore_database_mysql_username: semaphore
-semaphore_database_mysql_password: ''
+semaphore_database_mysql_password: ""
 semaphore_database_mysql_port: 3306
-semaphore_database_mysql_hostname: ''
+semaphore_database_mysql_hostname: ""
 semaphore_database_postgres_username: semaphore
-semaphore_database_postgres_password: ''
+semaphore_database_postgres_password: ""
 semaphore_database_postgres_port: 5432
-semaphore_database_postgres_hostname: ''
+semaphore_database_postgres_hostname: ""
 
 semaphore_database_name: semaphore
 
@@ -234,17 +234,17 @@ semaphore_database_name: semaphore
 semaphore_environment_variables_tmp_path: /tmp/semaphore
 
 semaphore_admin_username: admin
-semaphore_admin_password: ''
-semaphore_admin_name: ''
-semaphore_admin_email: ''
+semaphore_admin_password: ""
+semaphore_admin_name: ""
+semaphore_admin_email: ""
 
 # Specify the path to serve Semaphore UI.
 # Do not add a trailing /.
-semaphore_environment_variables_web_root: ''
+semaphore_environment_variables_web_root: ""
 
 # Specify string for encrypting access keys in database.
 # Generate one by running: head -c32 /dev/urandom | base64
-semaphore_access_key_encryption: ''
+semaphore_access_key_encryption: ""
 
 # Control if two-factor authentication with using TOTP is enabled
 semaphore_environment_variables_totp_enabled: false
@@ -253,11 +253,11 @@ semaphore_environment_variables_totp_enabled: false
 semaphore_environment_variables_totp_allow_recovery: false
 
 # Specify email details
-semaphore_environment_variables_email_sender: ''
-semaphore_environment_variables_email_host: ''
-semaphore_environment_variables_email_port: ''
-semaphore_environment_variables_email_username: ''
-semaphore_environment_variables_email_password: ''
+semaphore_environment_variables_email_sender: ""
+semaphore_environment_variables_email_host: ""
+semaphore_environment_variables_email_port: ""
+semaphore_environment_variables_email_username: ""
+semaphore_environment_variables_email_password: ""
 semaphore_environment_variables_email_secure: false
 
 # Control if host key checking by the underlying connection plugin Ansible uses to connect to the host is enabled
@@ -277,4 +277,4 @@ semaphore_environment_variables_ansible_host_key_checking: false
 #   SEMAPHORE_LDAP_PASSWORD: 'ldap_bind_account_password'
 #   SEMAPHORE_LDAP_DN_SEARCH: 'dc=local,dc=example,dc=com'
 #   SEMAPHORE_LDAP_SEARCH_FILTER: "(\u0026(uid=%s)(memberOf=cn=ipausers,cn=groups,cn=accounts,dc=local,dc=example,dc=com))"
-semaphore_environment_variables_additional_variables: ''
+semaphore_environment_variables_additional_variables: ""
