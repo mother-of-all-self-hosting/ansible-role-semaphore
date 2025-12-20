@@ -238,6 +238,9 @@ semaphore_admin_password: ""
 semaphore_admin_name: ""
 semaphore_admin_email: ""
 
+# Specify the timezone
+semaphore_environment_variables_tz: UTC
+
 # Specify the path to serve Semaphore UI.
 # Do not add a trailing /.
 semaphore_environment_variables_web_root: ""
