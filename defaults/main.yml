@@ -155,6 +155,11 @@ semaphore_container_labels_additional_labels: "{{ semaphore_container_labels_add
 semaphore_container_labels_additional_labels_auto: {}
 semaphore_container_labels_additional_labels_custom: {}
 
+# A list of extra arguments to pass to the container (`docker create` command)
+semaphore_container_extra_arguments: "{{ semaphore_container_extra_arguments_auto + semaphore_container_extra_arguments_custom }}"
+semaphore_container_extra_arguments_auto: []
+semaphore_container_extra_arguments_custom: []
+
 # Specifies the value of the `X-XSS-Protection` header
 # Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
 #
