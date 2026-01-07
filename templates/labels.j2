@@ -56,4 +56,6 @@ traefik.http.routers.{{ semaphore_identifier }}.tls.certResolver={{ semaphore_co
 traefik.http.services.{{ semaphore_identifier }}.loadbalancer.server.port={{ semaphore_container_http_port }}
 {% endif %}
 
-{{ semaphore_container_labels_additional_labels }}
+{% for arg in semaphore_container_labels_additional_labels %}
+{{ arg }}
+{% endfor %}

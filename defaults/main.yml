@@ -149,11 +149,11 @@ semaphore_container_labels_traefik_additional_response_headers_custom: {}
 #
 # Example:
 # semaphore_container_labels_additional_labels_custom: |
-#   my.label=1
-#   another.label="here"
-semaphore_container_labels_additional_labels: "{{ semaphore_container_labels_additional_labels_auto | combine(semaphore_container_labels_additional_labels_custom) }}"
-semaphore_container_labels_additional_labels_auto: {}
-semaphore_container_labels_additional_labels_custom: {}
+#   - my.label=1
+#   - another.label="here"
+semaphore_container_labels_additional_labels: "{{ semaphore_container_labels_additional_labels_auto + semaphore_container_labels_additional_labels_custom }}"
+semaphore_container_labels_additional_labels_auto: []
+semaphore_container_labels_additional_labels_custom: []
 
 # A list of extra arguments to pass to the container (`docker create` command)
 semaphore_container_extra_arguments: "{{ semaphore_container_extra_arguments_auto + semaphore_container_extra_arguments_custom }}"
