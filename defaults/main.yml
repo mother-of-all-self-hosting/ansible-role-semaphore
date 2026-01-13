@@ -96,7 +96,7 @@ semaphore_container_image_force_pull: "{{ semaphore_container_image.endswith(':l
 semaphore_container_http_host_bind_port: ""
 
 # The base container network. It will be auto-created by this role if it doesn't exist already.
-semaphore_container_network: '{{ semaphore_identifier }}'
+semaphore_container_network: "{{ semaphore_identifier }}"
 
 # The port number in the container
 semaphore_container_http_port: 3000
