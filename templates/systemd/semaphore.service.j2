@@ -41,7 +41,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --mount type=bind,src={{ semaphore_data_path }},dst=/var/lib/semaphore \
       --mount type=bind,src={{ semaphore_config_path }},dst=/etc/semaphore \
       --mount type=bind,src={{ semaphore_tmp_path }},dst={{ semaphore_environment_variables_tmp_path }} \
-      --tmpfs=/tmp:rw,noexec,nosuid,size=100m \
+      --tmpfs=/tmp:rw,noexec,nosuid,size={{ semaphore_container_tmpfs_tmp_size }} \
       {% for arg in semaphore_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}
