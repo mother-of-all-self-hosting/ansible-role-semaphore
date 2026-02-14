@@ -294,3 +294,13 @@ semaphore_environment_variables_ansible_host_key_checking: false
 #   SEMAPHORE_LDAP_DN_SEARCH: 'dc=local,dc=example,dc=com'
 #   SEMAPHORE_LDAP_SEARCH_FILTER: "(\u0026(uid=%s)(memberOf=cn=ipausers,cn=groups,cn=accounts,dc=local,dc=example,dc=com))"
 semaphore_environment_variables_additional_variables: ""
+
+# semaphore_restart_necessary controls whether the Semaphore UI systemd
+# service will be restarted (when true) or merely started (when false) by the
+# systemd service manager role (when conditional restart is enabled).
+#
+# This value is automatically computed during installation based on whether
+# any configuration files, the systemd service file, or the container image changed.
+# The default of `false` means "no restart needed" — appropriate when the role's
+# installation tasks haven't run (e.g., due to --tags skipping them).
+semaphore_restart_necessary: false

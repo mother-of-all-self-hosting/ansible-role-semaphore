@@ -42,6 +42,7 @@
     - env
     - labels
     - passwd
+  register: semaphore_support_files_result
 
 - name: Ensure Semaphore UI container image is pulled via community.docker.docker_image
   when: devture_systemd_docker_base_container_image_pull_method == 'ansible-module'
@@ -50,20 +51,20 @@
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
     force_source: "{{ semaphore_container_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
     force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else semaphore_container_image_force_pull }}"
-  register: result
+  register: semaphore_container_image_pull_result
   retries: "{{ devture_playbook_help_container_retries_count }}"
   delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
+  until: semaphore_container_image_pull_result is not failed
 
 - name: Ensure Semaphore UI container image is pulled via ansible.builtin.command
   when: devture_systemd_docker_base_container_image_pull_method == 'command'
   ansible.builtin.command:
     cmd: "{{ devture_systemd_docker_base_host_command_docker }} pull {{ semaphore_container_image }}"
-  register: result
+  register: semaphore_container_image_pull_result
   retries: "{{ devture_playbook_help_container_retries_count }}"
   delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
-  changed_when: "'Downloaded newer image' in result.stdout"
+  until: semaphore_container_image_pull_result is not failed
+  changed_when: "'Downloaded newer image' in semaphore_container_image_pull_result.stdout"
 
 - name: Run if container image customizations are enabled
   when: "semaphore_container_image_customizations_enabled | bool"
@@ -86,6 +87,7 @@
           dockerfile: Dockerfile
           path: "{{ semaphore_customized_container_src_path }}"
           pull: true
+      register: semaphore_container_image_build_result
 
 - name: Ensure Semaphore UI container network is created via community.docker.docker_network
   when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
@@ -113,3 +115,14 @@
     src: "{{ role_path }}/templates/systemd/semaphore.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ semaphore_identifier }}.service"
     mode: "0644"
+  register: semaphore_systemd_service_result
+
+- name: Determine whether Semaphore UI needs a restart
+  ansible.builtin.set_fact:
+    semaphore_restart_necessary: >-
+      {{
+        semaphore_support_files_result.changed | default(false)
+        or semaphore_systemd_service_result.changed | default(false)
+        or semaphore_container_image_pull_result.changed | default(false)
+        or semaphore_container_image_build_result.changed | default(false)
+      }}
