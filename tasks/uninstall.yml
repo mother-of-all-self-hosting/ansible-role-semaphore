@@ -70,6 +70,7 @@
       community.docker.docker_network:
         name: "{{ semaphore_container_network }}"
         state: absent
+      register: semaphore_network_deletion_result
 
     - name: Ensure Semaphore UI container network does not exist via ansible.builtin.command
       when: devture_systemd_docker_base_container_network_creation_method == 'command'
@@ -77,8 +78,8 @@
         cmd: >-
           {{ devture_systemd_docker_base_host_command_docker }} network rm
           {{ semaphore_container_network }}
-      register: network_deletion_result
-      changed_when: semaphore_container_network in network_deletion_result.stdout
+      register: semaphore_network_deletion_result
+      changed_when: semaphore_container_network in semaphore_network_deletion_result.stdout
 
 - name: Check existence of Semaphore UI local data path
   ansible.builtin.stat:
