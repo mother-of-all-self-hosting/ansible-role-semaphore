@@ -65,21 +65,24 @@
       changed_when: semaphore_base_path_deletion_result.rc == 0
       failed_when: false
 
-    - name: Ensure Semaphore UI container network does not exist via community.docker.docker_network
-      when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
-      community.docker.docker_network:
-        name: "{{ semaphore_container_network }}"
-        state: absent
-      register: semaphore_network_deletion_result
+    - name: Ensure Semaphore UI container network does not exist
+      when: semaphore_container_network_deletion_enabled
+      block:
+        - name: Ensure Semaphore UI container network does not exist via community.docker.docker_network
+          when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
+          community.docker.docker_network:
+            name: "{{ semaphore_container_network }}"
+            state: absent
+          register: semaphore_network_deletion_result
 
-    - name: Ensure Semaphore UI container network does not exist via ansible.builtin.command
-      when: devture_systemd_docker_base_container_network_creation_method == 'command'
-      ansible.builtin.command:
-        cmd: >-
-          {{ devture_systemd_docker_base_host_command_docker }} network rm
-          {{ semaphore_container_network }}
-      register: semaphore_network_deletion_result
-      changed_when: semaphore_container_network in semaphore_network_deletion_result.stdout
+        - name: Ensure Semaphore UI container network does not exist via ansible.builtin.command
+          when: devture_systemd_docker_base_container_network_creation_method == 'command'
+          ansible.builtin.command:
+            cmd: >-
+              {{ devture_systemd_docker_base_host_command_docker }} network rm
+              {{ semaphore_container_network }}
+          register: semaphore_network_deletion_result
+          changed_when: semaphore_container_network in semaphore_network_deletion_result.stdout
 
 - name: Check existence of Semaphore UI local data path
   ansible.builtin.stat:
