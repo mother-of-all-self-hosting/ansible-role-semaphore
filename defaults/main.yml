@@ -261,7 +261,7 @@ semaphore_container_cleanup_command: |
 # Specify username for passwd file
 semaphore_username: 'semaphore'
 
-# Specify database to use
+# Specify a database driver to use
 # Valid values: mysql, postgres, sqlite
 semaphore_database_type: sqlite
 
