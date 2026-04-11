@@ -90,7 +90,7 @@
   register: semaphore_data_path_stat
 
 # We just want to notify the user. Deleting data is too destructive.
-- name: Notify if Semaphore UI local data remains
+- name: Inject the message about the remaining Semaphore UI local data path
   when: semaphore_data_path_stat.stat.exists | bool
   ansible.builtin.set_fact:
     devture_playbook_runtime_messages_list: |
@@ -108,7 +108,7 @@
   register: semaphore_config_path_stat
 
 # We just want to notify the user. Deleting data is too destructive.
-- name: Notify if Semaphore UI config remains
+- name: Inject the message about the remaining Semaphore UI config path
   when: semaphore_config_path_stat.stat.exists | bool
   ansible.builtin.set_fact:
     devture_playbook_runtime_messages_list: |
