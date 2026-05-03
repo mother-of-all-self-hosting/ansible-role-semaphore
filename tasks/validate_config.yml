@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
 # SPDX-FileCopyrightText: 2023 MASH project contributors
-# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
-# SPDX-FileCopyrightText: 2025 Suguru Hirahara
+# SPDX-FileCopyrightText: 2023-2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2025, 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -28,19 +28,20 @@
 - name: Fail if required Semaphore UI settings not defined
   ansible.builtin.fail:
     msg: >-
-      You need to define a required configuration setting (`{{ item }}`).
-  when: "lookup('vars', item, default='') | string | length == 0"
+      You need to define a required configuration setting (`{{ item.name }}`).
+  when: "item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
   with_items:
-    - semaphore_uid
-    - semaphore_gid
-    - semaphore_hostname
-    - semaphore_path_prefix
-    - semaphore_container_network
-    - semaphore_admin_username
-    - semaphore_admin_password
-    - semaphore_admin_name
-    - semaphore_admin_email
-    - semaphore_access_key_encryption
+    - { "name": "semaphore_uid", when: true }
+    - { "name": "semaphore_gid", when: true }
+    - { "name": "semaphore_hostname", when: true }
+    - { "name": "semaphore_path_prefix", when: true }
+    - { "name": "semaphore_container_network", when: true }
+    - { "name": "semaphore_container_labels_traefik_middleware_basic_auth_users", when: "{{ semaphore_container_labels_traefik_middleware_basic_auth_enabled }}" }
+    - { "name": "semaphore_admin_username", when: true }
+    - { "name": "semaphore_admin_password", when: true }
+    - { "name": "semaphore_admin_name", when: true }
+    - { "name": "semaphore_admin_email", when: true }
+    - { "name": "semaphore_access_key_encryption", when: true }
 
 - name: Fail if Semaphore UI database type invalid
   ansible.builtin.fail:
