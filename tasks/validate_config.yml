@@ -24,6 +24,7 @@
     - { "old": "semaphore_database_host", "new": "<Replace with semaphore_database_postgres_hostname or semaphore_database_mysql_hostname>" }
     - { "old": "semaphore_environment_variables_extension", "new": "semaphore_environment_variables_additional_variables" }
     - { "old": "semaphore_http_header_content_permission_policy", "new": "semaphore_http_header_permissions_policy" }
+    - { "old": "semaphore_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
 
 - name: Fail if required Semaphore UI settings not defined
   ansible.builtin.fail:
