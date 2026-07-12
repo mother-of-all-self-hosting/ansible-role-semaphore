@@ -21,6 +21,13 @@
       "automergeType": "branch",
       "schedule": ["* * 1 */6 *"],
       "automergeSchedule": ["* * 1-14 */6 *"]
+    },
+    {
+      "matchFileNames": [
+        "defaults/main.yml"
+      ],
+      "enabled": true,
+      "schedule": ["* * * * 1,2"]
     }
   ],
   "customManagers": [
