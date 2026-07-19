@@ -49,6 +49,10 @@ Currently these testing scenarios are available
 
 Tests a standard Semaphore UI installation.
 
+### `mariadb`
+
+Tests a standard Semaphore UI installation with the MariaDB database.
+
 ### `postgres`
 
 Tests a standard Semaphore UI installation with the Postgres database.

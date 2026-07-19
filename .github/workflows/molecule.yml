@@ -19,6 +19,8 @@ jobs:
           - debian13
         scenario:
           - default
+          # Do not run the scenario with MariaDB as it is expected to fail. See: https://github.com/semaphoreui/semaphore/issues/3726
+          # - mariadb
           - postgres
       fail-fast: false
 
