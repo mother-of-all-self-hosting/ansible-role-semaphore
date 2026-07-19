@@ -30,6 +30,9 @@ To run a Semaphore UI instance it is necessary to prepare a database. You can us
 
 If you are looking for Ansible roles for a MySQL compatible server or Postgres, you can check out [ansible-role-mariadb](https://github.com/mother-of-all-self-hosting/ansible-role-mariadb) and [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres), both of which are maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team.
 
+>[!WARNING]
+> Semaphore UI is not compatible with MySQL / MariaDB out of the box. It is necessary to create an index manually. See <https://github.com/semaphoreui/semaphore/issues/3726> for details.
+
 ## Adjusting the playbook configuration
 
 To enable Semaphore UI with this role, add the following configuration to your `vars.yml` file.
