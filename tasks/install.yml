@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- name: Ensure Semaphore UI path exists
+- name: Ensure Semaphore UI paths exist
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
