@@ -40,7 +40,7 @@
         "defaults/main.yml"
       ],
       "enabled": true,
-      "schedule": ["* * * * 1,2"]
+      "schedule": ["* * * * 1"]
     }
   ],
   "customManagers": [
