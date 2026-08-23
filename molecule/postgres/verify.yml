@@ -1,14 +1,28 @@
 # SPDX-FileCopyrightText: 2026 Suguru Hirahara
 # SPDX-FileCopyrightText: 2026 spatterlight
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- name: Verify Semaphore UI systemd service
+- name: Verify Semaphore UI
   hosts: all
   become: true
   gather_facts: false
+
+  vars:
+    semaphore_verify_base_url: http://localhost:3000
+    semaphore_verify_project_name: molecule-verify-project
+
   tasks:
+    - name: Load Semaphore UI role defaults for verification
+      # Only literal leaf values may be read from here. Most defaults are Jinja
+      # expressions referring to variables that do not exist in this play, so
+      # they would fail to resolve if touched.
+      ansible.builtin.include_vars:
+        file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
+        name: semaphore_role_defaults
+
     - name: Wait for Semaphore UI service to become active (up to 180s)
       ansible.builtin.systemd:
         name: semaphore.service
@@ -29,25 +43,171 @@
         cmd: journalctl -xeu semaphore.service
       changed_when: false
 
-    - name: Wait for Semaphore UI HTTP endpoint to respond (up to 10m)
+    # `/api/ping` is a real API route. The web root serves the single-page
+    # application for any unknown path, so a 200 from something like `/info`
+    # only proves that static assets are reachable - it stays 200 even when the
+    # API and its database are broken. Unknown `/api/*` paths return 404.
+    - name: Wait for Semaphore UI API to respond (up to 10m)
       ansible.builtin.uri:
-        url: "http://localhost:3000/info"
+        url: "{{ semaphore_verify_base_url }}/api/ping"
         method: GET
-        status_code: [200, 302]
-        follow_redirects: none
-      register: semaphore_endpoint
-      until: semaphore_endpoint.status in [200, 302]
+        status_code: [200, 404, 500, 502, 503]
+        return_content: true
+      register: semaphore_ping
+      until: semaphore_ping.status == 200
       retries: 120
       delay: 5
 
-    - name: Assert Semaphore UI HTTP endpoint responds
+    - name: Assert Semaphore UI API answers the ping
       ansible.builtin.assert:
-        that: semaphore_endpoint.status in [200, 302]
-        fail_msg: "Semaphore UI did not respond as expected ({{ semaphore_endpoint.status | default('no response') }})"
-        success_msg: "Semaphore UI responded with {{ semaphore_endpoint.status }}"
+        that:
+          - semaphore_ping.status == 200
+          - "'pong' in semaphore_ping.content"
+        fail_msg: "/api/ping did not answer as expected (status {{ semaphore_ping.status }}, body {{ semaphore_ping.content | default('') }})"
+        success_msg: "/api/ping answered with pong"
 
-    - name: Show Semaphore UI systemd service status summary
+    - name: Request an authenticated Semaphore UI endpoint without credentials
+      ansible.builtin.uri:
+        url: "{{ semaphore_verify_base_url }}/api/projects"
+        method: GET
+        status_code: [200, 401, 403]
+      register: semaphore_anonymous
+
+    - name: Assert Semaphore UI refuses unauthenticated API access
+      ansible.builtin.assert:
+        that: semaphore_anonymous.status == 401
+        fail_msg: "/api/projects should be refused without credentials, got {{ semaphore_anonymous.status }}"
+        success_msg: "/api/projects is refused without credentials"
+
+    - name: Attempt a Semaphore UI login with a wrong password
+      ansible.builtin.uri:
+        url: "{{ semaphore_verify_base_url }}/api/auth/login"
+        method: POST
+        body_format: json
+        body:
+          auth: "{{ semaphore_admin_username }}"
+          password: "{{ semaphore_admin_password }}-wrong"
+        status_code: [200, 204, 400, 401]
+      register: semaphore_bad_login
+
+    - name: Assert Semaphore UI rejects a wrong password
+      ansible.builtin.assert:
+        that: semaphore_bad_login.status == 401
+        fail_msg: "Login with a wrong password should be rejected, got {{ semaphore_bad_login.status }}"
+        success_msg: "Login with a wrong password is rejected"
+
+    - name: Log in to Semaphore UI with the admin account provisioned by the role
+      ansible.builtin.uri:
+        url: "{{ semaphore_verify_base_url }}/api/auth/login"
+        method: POST
+        body_format: json
+        body:
+          auth: "{{ semaphore_admin_username }}"
+          password: "{{ semaphore_admin_password }}"
+        status_code: [200, 204, 400, 401]
+      register: semaphore_login
+
+    - name: Assert the admin account provisioned by the role can log in
+      ansible.builtin.assert:
+        that: semaphore_login.status == 204
+        fail_msg: "Login as {{ semaphore_admin_username }} failed with status {{ semaphore_login.status }}"
+        success_msg: "Logged in as {{ semaphore_admin_username }}"
+
+    # Only read the session cookie once the login is known to have succeeded.
+    - name: Capture the Semaphore UI session cookie
+      ansible.builtin.set_fact:
+        semaphore_session_cookie: "{{ semaphore_login.cookies_string }}"
+
+    - name: Read back the Semaphore UI account details
+      ansible.builtin.uri:
+        url: "{{ semaphore_verify_base_url }}/api/user"
+        method: GET
+        headers:
+          Cookie: "{{ semaphore_session_cookie }}"
+        status_code: [200, 401]
+      register: semaphore_user
+
+    # The admin username, display name and e-mail address travel from the role's
+    # variables through the rendered env file into the container, and end up in
+    # the database. Reading them back proves that the configuration this role
+    # writes actually reaches the running process.
+    - name: Assert the account details match what the role was configured with
+      ansible.builtin.assert:
+        that:
+          - semaphore_user.status == 200
+          - semaphore_user.json.username == semaphore_admin_username
+          - semaphore_user.json.name == semaphore_admin_name
+          - semaphore_user.json.email == semaphore_admin_email
+          - semaphore_user.json.admin
+        fail_msg: "Account details do not match the role configuration: {{ semaphore_user.json | default('no response') }}"
+        success_msg: "Account details match the role configuration"
+
+    - name: Retrieve the Semaphore UI server information
+      ansible.builtin.uri:
+        url: "{{ semaphore_verify_base_url }}/api/info"
+        method: GET
+        headers:
+          Cookie: "{{ semaphore_session_cookie }}"
+        status_code: [200, 401]
+      register: semaphore_info
+
+    # The reported version looks like `v2.19.8-3449a04-1786894633`, so compare
+    # against the `v`-prefixed leaf value rather than expecting an exact match.
+    - name: Assert the running version is the one the role declares
+      ansible.builtin.assert:
+        that:
+          - semaphore_info.status == 200
+          - semaphore_info.json.version.startswith('v' ~ semaphore_role_defaults.semaphore_version)
+        fail_msg: >-
+          Running version {{ semaphore_info.json.version | default('unknown') }}
+          does not match semaphore_version {{ semaphore_role_defaults.semaphore_version }}
+        success_msg: "Running version {{ semaphore_info.json.version | default('unknown') }} matches semaphore_version {{ semaphore_role_defaults.semaphore_version }}"
+
+    # Creating a project writes to the configured database and reading it back
+    # returns it, which exercises the database backend this scenario sets up.
+    - name: Create a Semaphore UI project
+      ansible.builtin.uri:
+        url: "{{ semaphore_verify_base_url }}/api/projects"
+        method: POST
+        body_format: json
+        body:
+          name: "{{ semaphore_verify_project_name }}"
+          alert: false
+        headers:
+          Cookie: "{{ semaphore_session_cookie }}"
+        status_code: [200, 201, 400, 401]
+      register: semaphore_project_creation
+
+    - name: Assert the Semaphore UI project was created
+      ansible.builtin.assert:
+        that:
+          - semaphore_project_creation.status == 201
+          - semaphore_project_creation.json.name == semaphore_verify_project_name
+        fail_msg: "Creating a project failed with status {{ semaphore_project_creation.status }}: {{ semaphore_project_creation.json | default('no response') }}"
+        success_msg: "Created project {{ semaphore_verify_project_name }}"
+
+    - name: Read the Semaphore UI project back
+      ansible.builtin.uri:
+        url: "{{ semaphore_verify_base_url }}/api/project/{{ semaphore_project_creation.json.id }}"
+        method: GET
+        headers:
+          Cookie: "{{ semaphore_session_cookie }}"
+        status_code: [200, 401, 404]
+      register: semaphore_project
+
+    - name: Assert the Semaphore UI project was stored in the database
+      ansible.builtin.assert:
+        that:
+          - semaphore_project.status == 200
+          - semaphore_project.json.id == semaphore_project_creation.json.id
+          - semaphore_project.json.name == semaphore_verify_project_name
+        fail_msg: "Reading the project back failed with status {{ semaphore_project.status }}: {{ semaphore_project.json | default('no response') }}"
+        success_msg: "Project {{ semaphore_verify_project_name }} was stored and read back"
+
+    - name: Show Semaphore UI verification summary
       ansible.builtin.debug:
         msg:
           - "Semaphore UI systemd: {{ semaphore_service.status.ActiveState }}"
-          - "Semaphore UI HTTP: {{ semaphore_endpoint.status }}"
+          - "Semaphore UI version: {{ semaphore_info.json.version }}"
+          - "Semaphore UI account: {{ semaphore_user.json.username }} <{{ semaphore_user.json.email }}>"
+          - "Semaphore UI project: {{ semaphore_project.json.name }} (id {{ semaphore_project.json.id }})"
