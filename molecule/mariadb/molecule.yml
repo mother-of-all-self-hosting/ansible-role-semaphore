@@ -42,9 +42,9 @@ provisioner:
         semaphore_admin_name: name
         semaphore_admin_email: example@example.com
         semaphore_access_key_encryption: SZzA3p6dEkpO3MP3w+OI3iUDalRtGX8B93TMmJj/ojk=
-        semaphore_database_type: mysql
 
         # Variables required for Semaphore UI to connect to the MariaDB database
+        semaphore_database_type: mysql
         semaphore_database_mysql_hostname: "{{ mariadb_connection_hostname }}"
         semaphore_database_mysql_port: "{{ mariadb_connection_port }}"
         semaphore_database_mysql_username: my_database_username
