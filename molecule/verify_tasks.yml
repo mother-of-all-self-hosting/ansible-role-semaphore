@@ -194,7 +194,7 @@
     fail_msg: "Reading the project back failed with status {{ semaphore_project.status }}: {{ semaphore_project.json | default('no response') }}"
     success_msg: "Project {{ semaphore_verify_project_name }} was stored and read back"
 
-- name: Show Semaphore UI verification summary
+- name: Show the Semaphore UI verification summary
   ansible.builtin.debug:
     msg:
       - "Semaphore UI systemd: {{ semaphore_service.status.ActiveState }}"
