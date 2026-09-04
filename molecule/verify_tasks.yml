@@ -143,15 +143,13 @@
 
 # The reported version looks like `v2.19.8-3449a04-1786894633`, so compare
 # against the `v`-prefixed leaf value rather than expecting an exact match.
-- name: Assert the running version is the one the role declares
+- name: Assert the running Semaphore UI is the version this role installs
   ansible.builtin.assert:
     that:
       - semaphore_info.status == 200
-      - semaphore_info.json.version.startswith('v' ~ semaphore_role_defaults.semaphore_version)
-    fail_msg: >-
-      Running version {{ semaphore_info.json.version | default('unknown') }}
-      does not match semaphore_version {{ semaphore_role_defaults.semaphore_version }}
-    success_msg: "Running version {{ semaphore_info.json.version | default('unknown') }} matches semaphore_version {{ semaphore_role_defaults.semaphore_version }}"
+      - semaphore_info.json.version.startswith('v' ~ semaphore_defaults.semaphore_version)
+    fail_msg: "Semaphore UI reports {{ semaphore_info.json.version | default('none') }}, expected {{ semaphore_defaults.semaphore_version }}"
+    success_msg: "Semaphore UI reports {{ semaphore_info.json.version }}"
 
 # Creating a project writes to the configured database and reading it back
 # returns it, which exercises the database backend this scenario sets up.
