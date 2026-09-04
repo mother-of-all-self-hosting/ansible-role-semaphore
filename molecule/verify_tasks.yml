@@ -5,13 +5,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- name: Load Semaphore UI role defaults for verification
-  # Only literal leaf values may be read from here. Most defaults are Jinja
-  # expressions referring to variables that do not exist in this play, so
-  # they would fail to resolve if touched.
+# The role is not included in this playbook, so its defaults are not in
+# scope. Reading defaults/main.yml directly ties the version assertion
+# below.
+- name: Load the role defaults
   ansible.builtin.include_vars:
     file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
-    name: semaphore_role_defaults
+    name: semaphore_defaults
 
 - name: Wait for Semaphore UI service to become active (up to 180s)
   ansible.builtin.systemd:
