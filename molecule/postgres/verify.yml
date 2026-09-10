@@ -15,5 +15,23 @@
     semaphore_verify_project_name: molecule-verify-project
 
   tasks:
-    - name: Run the shared Semaphore UI verification
-      ansible.builtin.include_tasks: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/molecule/verify_tasks.yml"
+    - name: Verify that Semaphore UI works
+      block:
+        - name: Run the shared Semaphore UI verification
+          ansible.builtin.include_tasks: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/molecule/verify_tasks.yml"
+
+      rescue:
+        # Whatever went wrong, the reason is almost always in the systemd service log.
+        - name: Retrieve the Semaphore UI systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=feishin.service
+          register: feishin_service_log
+          changed_when: false
+
+        - name: Show the Semaphore UI systemd service log
+          ansible.builtin.debug:
+            var: feishin_service_log.stdout_lines
+
+        - name: Fail because verification did not pass
+          ansible.builtin.fail:
+            msg: "Semaphore UI verification failed. The systemd service log is printed above."
