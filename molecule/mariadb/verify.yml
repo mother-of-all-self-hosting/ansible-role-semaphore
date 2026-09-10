@@ -24,13 +24,13 @@
         # Whatever went wrong, the reason is almost always in the systemd service log.
         - name: Retrieve the Semaphore UI systemd service log
           ansible.builtin.command:
-            cmd: journalctl --no-pager --output=cat --unit=feishin.service
-          register: feishin_service_log
+            cmd: journalctl --no-pager --output=cat --unit=semaphore.service
+          register: semaphore_service_log
           changed_when: false
 
         - name: Show the Semaphore UI systemd service log
           ansible.builtin.debug:
-            var: feishin_service_log.stdout_lines
+            var: semaphore_service_log.stdout_lines
 
         - name: Fail because verification did not pass
           ansible.builtin.fail:
