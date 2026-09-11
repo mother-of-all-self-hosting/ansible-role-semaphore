@@ -14,6 +14,10 @@
     semaphore_verify_base_url: http://localhost:3000
     semaphore_verify_project_name: molecule-verify-project
 
+    semaphore_verify_units:
+      - semaphore.service
+      - mariadb.service
+
   tasks:
     - name: Verify that Semaphore UI works
       block:
