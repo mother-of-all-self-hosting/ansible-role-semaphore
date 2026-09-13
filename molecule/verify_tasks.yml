@@ -13,13 +13,14 @@
     file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
     name: semaphore_defaults
 
-- name: Wait for the Semaphore UI systemd service to become active (up to 180s)
+- name: Wait for the Semaphore UI systemd services to become active (up to 180s each)
   ansible.builtin.systemd_service:
-    name: semaphore.service
-  register: semaphore_service
-  until: semaphore_service.status.ActiveState == 'active'
+    name: "{{ item }}"
+  register: semaphore_services
+  until: semaphore_services.status.ActiveState == 'active'
   retries: 36
   delay: 5
+  loop: "{{ semaphore_verify_units }}"
   # So that giving up is reported by the assertion below rather than as a
   # wall of systemd unit properties.
   failed_when: false
@@ -27,17 +28,20 @@
 # `Restart=always` in the systemd unit means that even a container which crashes
 # and gets restarted reads as active here, so this is a precondition rather than
 # a result.
-- name: Assert the Semaphore UI systemd service is active
+- name: Assert the Semaphore UI systemd services are active
   ansible.builtin.assert:
-    that: semaphore_service.status.ActiveState == 'active'
-    fail_msg: "semaphore.service is not active ({{ semaphore_service.status.ActiveState }})"
-    success_msg: "semaphore.service is active"
+    that: semaphore_services.results | map(attribute='status.ActiveState') | unique | list == ['active']
+    fail_msg: >-
+      Not every service is active:
+      {{ dict(semaphore_verify_units | zip(semaphore_services.results | map(attribute='status.ActiveState'))) }}
+    success_msg: "Every systemd service is active"
 
-- name: Retrieve the Semaphore UI systemd service log for debugging
+- name: Retrieve the Semaphore UI systemd services log for debugging
   when: semaphore_debug_service_enabled | bool
   ansible.builtin.command:
-    cmd: journalctl --no-pager --output=cat --unit=semaphore.service
+    cmd: "journalctl --no-pager --output=cat --unit={{ item }}"
   changed_when: false
+  loop: "{{ semaphore_verify_units }}"
 
 # `/api/ping` is a real API route. The web root serves the single-page
 # application for any unknown path, so a 200 from something like `/info`
@@ -201,7 +205,7 @@
 - name: Show the Semaphore UI verification summary
   ansible.builtin.debug:
     msg:
-      - "Semaphore UI systemd: {{ semaphore_service.status.ActiveState }}"
+      - "Semaphore UI systemd: {% for unit, state in semaphore_verify_units | zip(semaphore_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
       - "Semaphore UI version: {{ semaphore_info.json.version }}"
       - "Semaphore UI account: {{ semaphore_user.json.username }} <{{ semaphore_user.json.email }}>"
       - "Semaphore UI project: {{ semaphore_project.json.name }} (id {{ semaphore_project.json.id }})"
