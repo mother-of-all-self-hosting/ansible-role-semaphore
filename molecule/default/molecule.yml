@@ -30,6 +30,7 @@ provisioner:
       all:
         # Helper variables
         semaphore_debug_service_enabled: false
+        semaphore_restarts_check_enabled: true
 
         # Variables for Semaphore UI
         semaphore_uid: 1000
