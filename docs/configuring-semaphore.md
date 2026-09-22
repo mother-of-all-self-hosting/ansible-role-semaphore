@@ -175,7 +175,7 @@ If you use the MASH playbook, the shortcut commands with the [`just` program](ht
 
 After running the command for installation, Semaphore UI becomes available at the specified hostname like `https://example.com`.
 
-You can open the page with a web browser to log in to the instance. See [this official guide](https://docs.semaphoreui.com/user-guide/projects/) to get started.
+You can open the page with a web browser to log in to the instance. Refer to [this official guide](https://docs.semaphoreui.com/user-guide/projects/) to get started.
 
 ## Troubleshooting
 
