@@ -129,16 +129,16 @@ semaphore_environment_variables_totp_allow_recovery: true
 You can configure a SMTP mailer by adding the following configuration to your `vars.yml` file as below (adapt to your needs):
 
 ```yaml
-# Specify the hostname of the SMTP server
+# Specify SMTP server hostname
 semaphore_environment_variables_email_host: smtp.example.com
 
-# Specify the port number of the SMTP server
+# Specify SMTP server port number
 semaphore_environment_variables_email_port: ""
 
-# Specify the username for the SMTP server
+# Specify SMTP server username
 semaphore_environment_variables_email_username: semaphore@example.com
 
-# Specify the password for the SMTP server
+# Specify SMTP server password
 semaphore_environment_variables_email_password: YOUR_PASSWORD_HERE
 
 # Specify the email address that emails will be sent from
