@@ -71,20 +71,22 @@ To host Semaphore UI under a subpath, add the following configuration to your `v
 semaphore_environment_variables_web_root: "https://example.com/semaphore"
 ```
 
-### Configure database
+### Specify database (optional)
 
-You can specify the database to use by setting a value to `semaphore_database_type` as below:
+You can specify a database used by Semaphore UI. By default it is configured to use SQLite.
+
+To use Postgres, add the following configuration to your `vars.yml` file:
 
 ```yaml
 semaphore_database_type: postgres
 ```
 
-Set `mysql` for MySQL compatible database. If neither of them is selected, Semaphore UI will default to SQLite.
+Set `mysql` to use a MySQL compatible database.
+
+For other settings, check variables such as `semaphore_database_mysql_*` and `semaphore_database_postgres_*` on [`defaults/main.yml`](../defaults/main.yml).
 
 >[!NOTE]
 > BoltDB support has been removed with [v2.19.7](https://github.com/semaphoreui/semaphore/releases/tag/v2.19.7).
-
-For other settings, check variables such as `semaphore_database_mysql_*` and `semaphore_database_postgres_*` on [`defaults/main.yml`](../defaults/main.yml).
 
 ### Set details for the admin user
 
