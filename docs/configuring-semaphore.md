@@ -88,7 +88,7 @@ For other settings, check variables such as `semaphore_database_mysql_*` and `se
 >[!NOTE]
 > BoltDB support has been removed with [v2.19.7](https://github.com/semaphoreui/semaphore/releases/tag/v2.19.7).
 
-### Set details for the admin user
+### Set administrator's account details
 
 You also need to create an instance's admin user. To create one, add the following configuration to your `vars.yml` file. Make sure to replace values with your own ones.
 
