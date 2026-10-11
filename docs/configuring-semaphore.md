@@ -90,7 +90,7 @@ For other settings, check variables such as `semaphore_database_mysql_*` and `se
 
 ### Set administrator's account details
 
-You also need to create an instance's admin user. To create one, add the following configuration to your `vars.yml` file. Make sure to replace values with your own ones.
+You also need to specify administrator's account details by adding the following configuration to your `vars.yml` file:
 
 ```yaml
 semaphore_environment_variables_semaphore_admin: ADMIN_USERNAME_HERE
