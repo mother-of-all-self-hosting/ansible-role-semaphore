@@ -137,7 +137,7 @@
       - semaphore_user.status == 200
       - semaphore_user.json.username == semaphore_environment_variables_semaphore_admin
       - semaphore_user.json.name == semaphore_environment_variables_semaphore_admin_name
-      - semaphore_user.json.email == semaphore_admin_email
+      - semaphore_user.json.email == semaphore_environment_variables_semaphore_admin_email
       - semaphore_user.json.admin
     fail_msg: "Account details do not match the role configuration: {{ semaphore_user.json | default('no response') }}"
     success_msg: "Account details match the role configuration"
