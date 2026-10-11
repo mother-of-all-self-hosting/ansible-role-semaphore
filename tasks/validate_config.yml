@@ -26,6 +26,7 @@
     - { "old": "semaphore_admin_password", "new": "semaphore_environment_variables_semaphore_admin_password" }
     - { "old": "semaphore_admin_name", "new": "semaphore_environment_variables_semaphore_admin_name" }
     - { "old": "semaphore_admin_email", "new": "semaphore_environment_variables_semaphore_admin_email" }
+    - { "old": "semaphore_access_key_encryption", "new": "semaphore_environment_variables_semaphore_access_key_encryption" }
     - { "old": "semaphore_environment_variables_extension", "new": "semaphore_environment_variables_additional_variables" }
     - { "old": "semaphore_http_header_content_permission_policy", "new": "semaphore_http_header_permissions_policy" }
     - { "old": "semaphore_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
@@ -45,7 +46,7 @@
     - semaphore_environment_variables_semaphore_admin_password
     - semaphore_environment_variables_semaphore_admin_name
     - semaphore_environment_variables_semaphore_admin_email
-    - semaphore_access_key_encryption
+    - semaphore_environment_variables_semaphore_access_key_encryption
 
 - name: Fail if Semaphore UI database type invalid
   ansible.builtin.fail:

@@ -302,7 +302,7 @@ semaphore_environment_variables_web_root: ""
 
 # Specify string for encrypting access keys in database.
 # Generate one by running: head -c32 /dev/urandom | base64
-semaphore_access_key_encryption: ""
+semaphore_environment_variables_semaphore_access_key_encryption: ""
 
 # Control if two-factor authentication with using TOTP is enabled
 semaphore_environment_variables_totp_enabled: false

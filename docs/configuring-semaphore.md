@@ -106,7 +106,7 @@ Generating a strong password (e.g. `pwgen -s 64 1`) is recommended for `semaphor
 You also need to specify a string used for encrypting access keys in database. To do so, add the following configuration to your `vars.yml` file. The value can be generated with `head -c32 /dev/urandom | base64` or in another way.
 
 ```yaml
-semaphore_access_key_encryption: YOUR_SECRET_KEY_HERE
+semaphore_environment_variables_semaphore_access_key_encryption: YOUR_SECRET_KEY_HERE
 ```
 
 >[!NOTE]
