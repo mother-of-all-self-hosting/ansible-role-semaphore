@@ -290,7 +290,7 @@ semaphore_environment_variables_tmp_path: /tmp/semaphore
 
 semaphore_environment_variables_semaphore_admin: admin
 semaphore_environment_variables_semaphore_admin_password: ""
-semaphore_admin_name: ""
+semaphore_environment_variables_semaphore_admin_name: ""
 semaphore_admin_email: ""
 
 # Specify the timezone
