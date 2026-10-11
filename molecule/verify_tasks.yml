@@ -86,7 +86,7 @@
     body_format: json
     body:
       auth: "{{ semaphore_environment_variables_semaphore_admin }}"
-      password: "{{ semaphore_admin_password }}-wrong"
+      password: "{{ semaphore_environment_variables_semaphore_admin_password }}-wrong"
     status_code: [200, 204, 400, 401]
   register: semaphore_bad_login
 
@@ -103,7 +103,7 @@
     body_format: json
     body:
       auth: "{{ semaphore_environment_variables_semaphore_admin }}"
-      password: "{{ semaphore_admin_password }}"
+      password: "{{ semaphore_environment_variables_semaphore_admin_password }}"
     status_code: [200, 204, 400, 401]
   register: semaphore_login
 

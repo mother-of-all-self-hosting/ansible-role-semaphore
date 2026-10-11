@@ -94,12 +94,12 @@ You also need to create an instance's admin user. To create one, add the followi
 
 ```yaml
 semaphore_environment_variables_semaphore_admin: ADMIN_USERNAME_HERE
-semaphore_admin_password: ADMIN_PASSWORD_HERE
+semaphore_environment_variables_semaphore_admin_password: ADMIN_PASSWORD_HERE
 semaphore_admin_name: ADMIN_ACTUAL_NAME_HERE
 semaphore_admin_email: ADMIN_EMAIL_ADDRESS_HERE
 ```
 
-Generating a strong password (e.g. `pwgen -s 64 1`) is recommended for `semaphore_admin_password`.
+Generating a strong password (e.g. `pwgen -s 64 1`) is recommended for `semaphore_environment_variables_semaphore_admin_password`.
 
 ### Set a string for encrypting access keys
 
