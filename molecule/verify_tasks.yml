@@ -85,7 +85,7 @@
     method: POST
     body_format: json
     body:
-      auth: "{{ semaphore_admin_username }}"
+      auth: "{{ semaphore_environment_variables_semaphore_admin }}"
       password: "{{ semaphore_admin_password }}-wrong"
     status_code: [200, 204, 400, 401]
   register: semaphore_bad_login
@@ -102,7 +102,7 @@
     method: POST
     body_format: json
     body:
-      auth: "{{ semaphore_admin_username }}"
+      auth: "{{ semaphore_environment_variables_semaphore_admin }}"
       password: "{{ semaphore_admin_password }}"
     status_code: [200, 204, 400, 401]
   register: semaphore_login
@@ -110,8 +110,8 @@
 - name: Assert the admin account provisioned by the role can log in
   ansible.builtin.assert:
     that: semaphore_login.status == 204
-    fail_msg: "Login as {{ semaphore_admin_username }} failed with status {{ semaphore_login.status }}"
-    success_msg: "Logged in as {{ semaphore_admin_username }}"
+    fail_msg: "Login as {{ semaphore_environment_variables_semaphore_admin }} failed with status {{ semaphore_login.status }}"
+    success_msg: "Logged in as {{ semaphore_environment_variables_semaphore_admin }}"
 
 # Only read the session cookie once the login is known to have succeeded.
 - name: Capture the Semaphore UI session cookie
@@ -135,7 +135,7 @@
   ansible.builtin.assert:
     that:
       - semaphore_user.status == 200
-      - semaphore_user.json.username == semaphore_admin_username
+      - semaphore_user.json.username == semaphore_environment_variables_semaphore_admin
       - semaphore_user.json.name == semaphore_admin_name
       - semaphore_user.json.email == semaphore_admin_email
       - semaphore_user.json.admin

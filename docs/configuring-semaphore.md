@@ -93,7 +93,7 @@ For other settings, check variables such as `semaphore_database_mysql_*` and `se
 You also need to create an instance's admin user. To create one, add the following configuration to your `vars.yml` file. Make sure to replace values with your own ones.
 
 ```yaml
-semaphore_admin_username: ADMIN_USERNAME_HERE
+semaphore_environment_variables_semaphore_admin: ADMIN_USERNAME_HERE
 semaphore_admin_password: ADMIN_PASSWORD_HERE
 semaphore_admin_name: ADMIN_ACTUAL_NAME_HERE
 semaphore_admin_email: ADMIN_EMAIL_ADDRESS_HERE

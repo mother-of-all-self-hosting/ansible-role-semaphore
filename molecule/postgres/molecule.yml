@@ -45,7 +45,7 @@ provisioner:
         semaphore_hostname: localhost
         semaphore_container_labels_traefik_enabled: false
         semaphore_container_http_host_bind_port: 3000
-        semaphore_admin_username: username
+        semaphore_environment_variables_semaphore_admin: username
         semaphore_admin_password: password
         semaphore_admin_name: name
         semaphore_admin_email: example@example.com
