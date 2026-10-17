@@ -73,7 +73,7 @@ semaphore_environment_variables_web_root: "https://example.com/semaphore"
 
 ### Specify database (optional)
 
-You can specify a database used by Semaphore UI. By default it is configured to use SQLite.
+You can specify a database used by Semaphore UI. By default it is configured to use SQLite. The SQLite database is stored in the directory specified with `semaphore_data_path`.
 
 To use Postgres, add the following configuration to your `vars.yml` file:
 
