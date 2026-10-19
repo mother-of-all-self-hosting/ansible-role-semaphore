@@ -83,7 +83,7 @@ semaphore_database_type: postgres
 
 Set `mysql` to use a MySQL compatible database.
 
-For other settings, check variables such as `semaphore_database_mysql_*` and `semaphore_database_postgres_*` on [`defaults/main.yml`](../defaults/main.yml).
+For other settings, check variables such as `semaphore_database_*` on [`defaults/main.yml`](../defaults/main.yml).
 
 >[!NOTE]
 > BoltDB support has been removed with [v2.19.7](https://github.com/semaphoreui/semaphore/releases/tag/v2.19.7).
