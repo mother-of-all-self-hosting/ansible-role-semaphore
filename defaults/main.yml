@@ -271,7 +271,7 @@ semaphore_username: 'semaphore'
 
 # Specify a database driver to use
 # Valid values: mysql, postgres, sqlite
-semaphore_database_type: sqlite
+semaphore_database_type: ""
 
 semaphore_database_mysql_username: semaphore
 semaphore_database_mysql_password: ""

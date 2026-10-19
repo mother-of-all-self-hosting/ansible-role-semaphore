@@ -26,7 +26,7 @@ See the project's [documentation](https://docs.semaphoreui.com/) to learn what S
 
 ## Prerequisites
 
-To run a Semaphore UI instance it is necessary to prepare a database. You can use a [MySQL](https://www.mysql.com/) compatible database server, [Postgres](https://www.postgresql.org/), or [SQLite](https://www.sqlite.org/). By default it is configured to use SQLite.
+To run a Semaphore UI instance it is necessary to prepare a database. You can use a [MySQL](https://www.mysql.com/) compatible database server, [Postgres](https://www.postgresql.org/), or [SQLite](https://www.sqlite.org/).
 
 If you are looking for Ansible roles for a MySQL compatible server or Postgres, you can check out [ansible-role-mariadb](https://github.com/mother-of-all-self-hosting/ansible-role-mariadb) and [ansible-role-postgres](https://github.com/mother-of-all-self-hosting/ansible-role-postgres), both of which are maintained by the [Mother-of-All-Self-Hosting (MASH)](https://github.com/mother-of-all-self-hosting) team.
 
@@ -71,9 +71,9 @@ To host Semaphore UI under a subpath, add the following configuration to your `v
 semaphore_environment_variables_web_root: "https://example.com/semaphore"
 ```
 
-### Specify database (optional)
+### Specify database
 
-You can specify a database used by Semaphore UI. By default it is configured to use SQLite. The SQLite database is stored in the directory specified with `semaphore_data_path`.
+Semaphore UI can use either a MySQL compatible database, Postgres, or SQLite, and you need to choose one.
 
 To use Postgres, add the following configuration to your `vars.yml` file:
 
@@ -81,12 +81,14 @@ To use Postgres, add the following configuration to your `vars.yml` file:
 semaphore_database_type: postgres
 ```
 
-Set `mysql` to use a MySQL compatible database.
+Set `mysql` to use a MySQL compatible database and `sqlite` to use SQLite, respectively. The SQLite database is stored in the directory specified with `semaphore_data_path`.
 
 For other settings, check variables such as `semaphore_database_*` on [`defaults/main.yml`](../defaults/main.yml).
 
 >[!NOTE]
-> BoltDB support has been removed with [v2.19.7](https://github.com/semaphoreui/semaphore/releases/tag/v2.19.7).
+>
+> - If you (or your playbook) have not specified a MySQL compatible database or Postgres explicitly, the database for your existing installation is most likely to be `sqlite`.
+> - BoltDB support has been removed with [v2.19.7](https://github.com/semaphoreui/semaphore/releases/tag/v2.19.7).
 
 ### Set administrator's account details
 

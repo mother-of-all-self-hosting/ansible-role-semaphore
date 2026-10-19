@@ -42,6 +42,7 @@
     - semaphore_hostname
     - semaphore_path_prefix
     - semaphore_container_network
+    - semaphore_database_type
     - semaphore_environment_variables_semaphore_admin
     - semaphore_environment_variables_semaphore_admin_password
     - semaphore_environment_variables_semaphore_admin_name
