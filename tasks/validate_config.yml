@@ -55,23 +55,39 @@
       semaphore_database_type must be 'mysql', 'postgres' or 'sqlite'
   when: "semaphore_database_type not in ['mysql', 'postgres', 'sqlite']"
 
-- name: Fail if required Semaphore UI + MySQL integration settings not defined
-  ansible.builtin.fail:
-    msg: >-
-      You need to define a required configuration setting (`{{ item }}`) when `semaphore_database_type` is `mysql`
-  when: "semaphore_database_type == 'mysql' and lookup('vars', item, default='') | string | length == 0"
-  with_items:
-    - semaphore_database_mysql_hostname
-    - semaphore_database_mysql_password
+- name: Run if Semaphore UI + MySQL integration is enabled
+  when: semaphore_database_type == 'mysql'
+  block:
+    - name: Fail if required Semaphore UI + MySQL integration settings not defined
+      ansible.builtin.fail:
+        msg: >-
+          You need to define a required configuration setting (`{{ item }}`) when `semaphore_database_type` is `mysql`
+      when: "lookup('vars', item, default='') | string | length == 0"
+      with_items:
+        - semaphore_database_mysql_hostname
+        - semaphore_database_mysql_password
 
-- name: Fail if required Semaphore UI + Postgres integration settings not defined
-  ansible.builtin.fail:
-    msg: >-
-      You need to define a required configuration setting (`{{ item }}`) when `semaphore_database_type` is `postgres`
-  when: "semaphore_database_type == 'postgres' and lookup('vars', item, default='') | string | length == 0"
-  with_items:
-    - semaphore_database_postgres_hostname
-    - semaphore_database_postgres_password
+    - name: Fail if MySQL database password contains disallowed characters
+      ansible.builtin.fail:
+        msg: "semaphore_database_mysql_password contains unallowed characters."
+      when: semaphore_database_mysql_password is not match('^[A-Za-z0-9_.-]+$')
+
+- name: Run if Semaphore UI + Postgres integration is enabled
+  when: semaphore_database_type == 'postgres'
+  block:
+    - name: Fail if required Semaphore UI + Postgres integration settings not defined
+      ansible.builtin.fail:
+        msg: >-
+          You need to define a required configuration setting (`{{ item }}`) when `semaphore_database_type` is `postgres`
+      when: "lookup('vars', item, default='') | string | length == 0"
+      with_items:
+        - semaphore_database_postgres_hostname
+        - semaphore_database_postgres_password
+
+    - name: Fail if Postgres database password contains disallowed characters
+      ansible.builtin.fail:
+        msg: "semaphore_database_postgres_password contains unallowed characters."
+      when: semaphore_database_postgres_password is not match('^[A-Za-z0-9_.-]+$')
 
 - name: Fail if SMTP settings are missing (and SMTP is enabled by setting host)
   ansible.builtin.fail:
