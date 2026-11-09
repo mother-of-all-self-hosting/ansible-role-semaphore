@@ -54,8 +54,8 @@ provisioner:
         semaphore_database_type: mysql
         semaphore_database_mysql_hostname: "{{ mariadb_connection_hostname }}"
         semaphore_database_mysql_port: "{{ mariadb_connection_port }}"
-        semaphore_database_mysql_username: my_database_username
-        semaphore_database_mysql_password: my_database_password
+        semaphore_database_mysql_username: /#@my_database_username?%
+        semaphore_database_mysql_password: /#@my_database_password?%
         semaphore_database_name: semaphore
         semaphore_systemd_required_services_list_auto: |
           {{
