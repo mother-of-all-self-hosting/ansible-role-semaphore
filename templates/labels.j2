@@ -20,16 +20,10 @@ traefik.docker.network={{ semaphore_container_labels_traefik_docker_network }}
 traefik.http.middlewares.{{ semaphore_identifier }}-basic-auth.basicauth.users={{ semaphore_container_labels_traefik_middleware_basic_auth_users }}
 {% endif %}
 
-{% if semaphore_container_labels_traefik_path_prefix != '/' %}
-traefik.http.middlewares.{{ semaphore_identifier }}-slashless-redirect.redirectregex.regex=^({{ semaphore_container_labels_traefik_path_prefix | quote }})$
-traefik.http.middlewares.{{ semaphore_identifier }}-slashless-redirect.redirectregex.replacement=${1}/
-{% set middlewares = middlewares + [semaphore_identifier + '-slashless-redirect'] %}
-{% endif %}
-
-{% if semaphore_container_labels_traefik_path_prefix != '/' %}
-traefik.http.middlewares.{{ semaphore_identifier }}-strip-prefix.stripprefix.prefixes={{ semaphore_container_labels_traefik_path_prefix }}
-{% set middlewares = middlewares + [semaphore_identifier + '-strip-prefix'] %}
-{% endif %}
+{#
+  Intentionally not adding redirectRegex and stripPrefix middleware.
+  Semaphore UI serves itself at the same path as it sees in the SEMAPHORE_WEB_ROOT environment variable.
+#}
 
 {% if semaphore_container_labels_traefik_additional_request_headers.keys() | length > 0 %}
 {% for name, value in semaphore_container_labels_traefik_additional_request_headers.items() %}

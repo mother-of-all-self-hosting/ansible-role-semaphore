@@ -51,6 +51,9 @@ provisioner:
         semaphore_environment_variables_semaphore_admin_name: name
         semaphore_environment_variables_semaphore_admin_email: example@example.com
         semaphore_environment_variables_semaphore_access_key_encryption: SZzA3p6dEkpO3MP3w+OI3iUDalRtGX8B93TMmJj/ojk=
+
+        # Testing a different public URL than other scenarios
+        semaphore_environment_variables_web_root: http://localhost:3000/semaphore
   env:
     # Workaround for https://github.com/ansible/molecule/issues/4391
     ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/..:/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:~/.ansible/roles

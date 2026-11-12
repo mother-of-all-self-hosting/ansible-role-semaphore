@@ -29,7 +29,7 @@ semaphore_gid: ""
 semaphore_hostname: ""
 
 # The path at which Semaphore UI is served.
-# This value must either be `/` or not end with a slash (e.g. `/semaphore`).
+# This value must be `/`, as the whole path with a subpath can only be specified with "semaphore_environment_variables_web_root".
 semaphore_path_prefix: /
 
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
@@ -311,6 +311,7 @@ semaphore_environment_variables_tz: UTC
 
 # Specify the path to serve Semaphore UI.
 # Do not add a trailing /.
+# Example: https://example.com/semaphore
 semaphore_environment_variables_web_root: ""
 
 # Specify string for encrypting access keys in database.
