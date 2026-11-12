@@ -20,7 +20,7 @@ semaphore_tmp_path: "{{ semaphore_base_path }}/tmp" # mounted to /tmp/semaphore 
 semaphore_customized_container_src_path: "{{ semaphore_base_path }}/customized-container-src"
 
 # renovate: datasource=docker depName=semaphoreui/semaphore versioning=semver
-semaphore_version: 2.19.17
+semaphore_version: 2.20.24
 
 semaphore_uid: ""
 semaphore_gid: ""
@@ -129,6 +129,19 @@ semaphore_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 semaphore_container_labels_traefik_middleware_basic_auth_enabled: false
 # See: https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/basicauth/
 semaphore_container_labels_traefik_middleware_basic_auth_users: ""
+
+# Controls if labels are added to expose the Prometheus metrics publicly.
+semaphore_container_labels_traefik_metrics_enabled: "{{ semaphore_environment_variables_semaphore_metrics_enabled }}"
+semaphore_container_labels_traefik_metrics_hostname: "{{ semaphore_hostname }}"
+# The path prefix must either be `/` or not end with a slash (e.g. `/metrics`).
+semaphore_container_labels_traefik_metrics_path_prefix: /metrics
+semaphore_container_labels_traefik_metrics_rule: "Host(`{{ semaphore_container_labels_traefik_metrics_hostname }}`){% if semaphore_container_labels_traefik_metrics_path_prefix != '/' %} && PathPrefix(`{{ semaphore_container_labels_traefik_metrics_path_prefix }}`){% endif %}"
+semaphore_container_labels_traefik_metrics_priority: 0
+semaphore_container_labels_traefik_metrics_entrypoints: "{{ semaphore_container_labels_traefik_entrypoints }}"
+semaphore_container_labels_traefik_metrics_middlewares: []
+semaphore_container_labels_traefik_metrics_tls: "{{ semaphore_container_labels_traefik_metrics_entrypoints != 'web' }}"
+semaphore_container_labels_traefik_metrics_tls_certResolver: "{{ semaphore_container_labels_traefik_tls_certResolver }}"  # noqa var-naming
+# NOTE: Semaphore UI enables the HTTP Basic authentication for the metrics endpoint by default
 
 # Controls which additional headers to attach to all HTTP requests.
 # To add your own custom request headers, use `semaphore_container_labels_traefik_additional_request_headers_custom`
@@ -321,6 +334,10 @@ semaphore_environment_variables_email_secure: false
 # Control if host key checking by the underlying connection plugin Ansible uses to connect to the host is enabled
 # See: https://docs.ansible.com/ansible/latest/reference_appendices/config.html#envvar-ANSIBLE_HOST_KEY_CHECKING
 semaphore_environment_variables_ansible_host_key_checking: false
+
+semaphore_environment_variables_semaphore_metrics_enabled: false
+semaphore_environment_variables_semaphore_metrics_username: ""
+semaphore_environment_variables_semaphore_metrics_password: ""
 
 # Additional environment variables to pass to the Semaphore UI container.
 # You can use this to further influence the default configuration.

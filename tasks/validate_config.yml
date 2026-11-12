@@ -34,20 +34,22 @@
 - name: Fail if required Semaphore UI settings not defined
   ansible.builtin.fail:
     msg: >-
-      You need to define a required configuration setting (`{{ item }}`).
-  when: "lookup('vars', item, default='') | string | length == 0"
+      You need to define a required configuration setting (`{{ item.name }}`).
+  when: "item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
   with_items:
-    - semaphore_uid
-    - semaphore_gid
-    - semaphore_hostname
-    - semaphore_path_prefix
-    - semaphore_container_network
-    - semaphore_database_type
-    - semaphore_environment_variables_semaphore_admin
-    - semaphore_environment_variables_semaphore_admin_password
-    - semaphore_environment_variables_semaphore_admin_name
-    - semaphore_environment_variables_semaphore_admin_email
-    - semaphore_environment_variables_semaphore_access_key_encryption
+    - { "name": "semaphore_uid", when: true }
+    - { "name": "semaphore_gid", when: true }
+    - { "name": "semaphore_hostname", when: true }
+    - { "name": "semaphore_path_prefix", when: true }
+    - { "name": "semaphore_container_network", when: true }
+    - { "name": "semaphore_database_type", when: true }
+    - { "name": "semaphore_environment_variables_semaphore_admin", when: true }
+    - { "name": "semaphore_environment_variables_semaphore_admin_password", when: true }
+    - { "name": "semaphore_environment_variables_semaphore_admin_name", when: true }
+    - { "name": "semaphore_environment_variables_semaphore_admin_email", when: true }
+    - { "name": "semaphore_environment_variables_semaphore_access_key_encryption", when: true }
+    - { "name": "semaphore_environment_variables_semaphore_metrics_username", when: "{{ semaphore_environment_variables_semaphore_metrics_enabled }}" }
+    - { "name": "semaphore_environment_variables_semaphore_metrics_password", when: "{{ semaphore_environment_variables_semaphore_metrics_enabled }}" }
 
 - name: Fail if Semaphore UI database type invalid
   ansible.builtin.fail:
@@ -119,3 +121,24 @@
         msg: >-
           semaphore_container_labels_traefik_path_prefix (`{{ semaphore_container_labels_traefik_path_prefix }}`) must either be `/` or not end with a slash (e.g. `/semaphore`).
       when: "semaphore_container_labels_traefik_path_prefix != '/' and semaphore_container_labels_traefik_path_prefix[-1] == '/'"
+
+- name: Run if Traefik is enabled for Prometheus endpoint
+  when: semaphore_container_labels_traefik_metrics_enabled | bool
+  block:
+    - name: Fail if Traefik settings required for Semaphore UI metrics endpoint are not defined
+      ansible.builtin.fail:
+        msg: >-
+          You need to define a required configuration setting (`{{ item }}`) for enabling the Prometheus endpoint.
+      when: "lookup('vars', item, default='') | string | length == 0"
+      with_items:
+        - semaphore_container_labels_traefik_metrics_hostname
+        - semaphore_container_labels_traefik_metrics_path_prefix
+
+    # We ensure it doesn't end with a slash, because we handle both (slash and no-slash).
+    # Knowing that `semaphore_container_labels_traefik_metrics_path_prefix` does not end with a slash
+    # ensures we know how to set these routes up without having to do "does it end with a slash" checks elsewhere.
+    - name: Fail if semaphore_container_labels_traefik_metrics_path_prefix ends with a slash
+      ansible.builtin.fail:
+        msg: >-
+          semaphore_container_labels_traefik_metrics_path_prefix (`{{ semaphore_container_labels_traefik_metrics_path_prefix }}`) must either be `/` or not end with a slash (e.g. `/metrics`).
+      when: "semaphore_container_labels_traefik_metrics_path_prefix != '/' and semaphore_container_labels_traefik_metrics_path_prefix[-1] == '/'"

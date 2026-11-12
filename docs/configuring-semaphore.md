@@ -155,6 +155,12 @@ semaphore_environment_variables_email_secure: false
 >[!WARNING]
 > Without setting an authentication method such as DKIM, SPF, and DMARC for your hostname, emails are most likely to be quarantined as spam at recipient's mail servers. The worst scenario is that your server's IP address or hostname will be included in the spam list such as the one managed by [Spamhaus](https://www.spamhaus.org/). If you have set up a mail server with the [MASH project's exim-relay Ansible role](https://github.com/mother-of-all-self-hosting/ansible-role-exim-relay), you can enable DKIM signing with it. Refer [its documentation](https://github.com/mother-of-all-self-hosting/ansible-role-exim-relay/blob/main/docs/configuring-exim-relay.md#enable-dkim-support-optional) for details.
 
+### Integrating with Prometheus (optional)
+
+Semaphore UI can natively expose metrics to Prometheus.
+
+If you are looking for an integration, you can check out the MASH playbook. Refer to [this section of the documentation on the playbook](https://github.com/mother-of-all-self-hosting/mash-playbook/blob/main/docs/services/semaphore.md#integrating-with-prometheus-optional) for more information.
+
 ### Extending the configuration
 
 There are some additional things you may wish to configure about the service.

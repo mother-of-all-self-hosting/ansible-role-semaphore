@@ -60,6 +60,49 @@ traefik.http.routers.{{ semaphore_identifier }}.tls.certResolver={{ semaphore_co
 {% endif %}
 
 traefik.http.services.{{ semaphore_identifier }}.loadbalancer.server.port={{ semaphore_container_http_port }}
+
+{% if semaphore_container_labels_traefik_metrics_enabled %}
+########################################################################
+#                                                                      #
+# Metrics                                                              #
+#                                                                      #
+########################################################################
+
+{% set middlewares = semaphore_container_labels_traefik_metrics_middlewares %}
+
+# NOTE: Semaphore UI enables the HTTP Basic authentication for the metrics endpoint by default
+
+traefik.http.middlewares.{{ semaphore_identifier }}-metrics-replace-path.replacepath.path=/api/metrics
+{% set middlewares = middlewares + [semaphore_identifier + '-metrics-replace-path'] %}
+
+traefik.http.routers.{{ semaphore_identifier }}-metrics.rule={{ semaphore_container_labels_traefik_metrics_rule }}
+
+{% if semaphore_container_labels_traefik_metrics_priority | int > 0 %}
+traefik.http.routers.{{ semaphore_identifier }}-metrics.priority={{ semaphore_container_labels_traefik_metrics_priority }}
+{% endif %}
+
+traefik.http.routers.{{ semaphore_identifier }}-metrics.service={{ semaphore_identifier }}-metrics
+
+{% if middlewares | length > 0 %}
+traefik.http.routers.{{ semaphore_identifier }}-metrics.middlewares={{ middlewares | join(',') }}
+{% endif %}
+
+traefik.http.routers.{{ semaphore_identifier }}-metrics.entrypoints={{ semaphore_container_labels_traefik_metrics_entrypoints }}
+
+traefik.http.routers.{{ semaphore_identifier }}-metrics.tls={{ semaphore_container_labels_traefik_metrics_tls | to_json }}
+{% if semaphore_container_labels_traefik_metrics_tls %}
+traefik.http.routers.{{ semaphore_identifier }}-metrics.tls.certResolver={{ semaphore_container_labels_traefik_metrics_tls_certResolver }}
+{% endif %}
+
+traefik.http.services.{{ semaphore_identifier }}-metrics.loadbalancer.server.port={{ semaphore_container_http_port }}
+
+########################################################################
+#                                                                      #
+# /Metrics                                                             #
+#                                                                      #
+########################################################################
+{% endif %}
+
 {% endif %}
 
 {% for arg in semaphore_container_labels_additional_labels %}
