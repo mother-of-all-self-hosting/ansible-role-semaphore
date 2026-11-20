@@ -39,9 +39,6 @@
   with_items:
     - { "name": "semaphore_uid", when: true }
     - { "name": "semaphore_gid", when: true }
-    - { "name": "semaphore_hostname", when: true }
-    - { "name": "semaphore_path_prefix", when: true }
-    - { "name": "semaphore_container_network", when: true }
     - { "name": "semaphore_database_type", when: true }
     - { "name": "semaphore_environment_variables_semaphore_admin", when: true }
     - { "name": "semaphore_environment_variables_semaphore_admin_password", when: true }
