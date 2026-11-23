@@ -25,11 +25,13 @@ semaphore_version: 2.20.24
 semaphore_uid: ""
 semaphore_gid: ""
 
+# The scheme used for serving Semaphore UI.
+semaphore_scheme: https
+
 # The hostname at which Semaphore UI is served.
 semaphore_hostname: ""
 
 # The path at which Semaphore UI is served.
-# This value must be `/`, as the whole path with a subpath can only be specified with "semaphore_environment_variables_web_root".
 semaphore_path_prefix: /
 
 semaphore_container_image: "{{ semaphore_container_image_registry_prefix }}semaphoreui/semaphore:{{ semaphore_container_image_tag }}"
@@ -312,7 +314,7 @@ semaphore_environment_variables_tz: UTC
 # Specify the path to serve Semaphore UI.
 # Do not add a trailing /.
 # Example: https://example.com/semaphore
-semaphore_environment_variables_web_root: ""
+semaphore_environment_variables_web_root: "{{ semaphore_scheme }}://{{ semaphore_hostname }}{% if semaphore_path_prefix != '/' %}{{ semaphore_path_prefix }}{% endif %}"
 
 # Specify string for encrypting access keys in database.
 # Generate one by running: head -c32 /dev/urandom | base64
