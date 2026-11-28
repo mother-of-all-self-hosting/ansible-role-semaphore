@@ -83,6 +83,7 @@
               {{ semaphore_container_network }}
           register: semaphore_network_deletion_result
           changed_when: semaphore_container_network in semaphore_network_deletion_result.stdout
+          failed_when: semaphore_network_deletion_result.rc != 0 and 'not found' not in semaphore_network_deletion_result.stderr
 
 - name: Check existence of Semaphore UI local data path
   ansible.builtin.stat:
