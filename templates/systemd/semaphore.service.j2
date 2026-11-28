@@ -49,9 +49,11 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {{ arg }} \
       {% endfor %}
 
+{% if semaphore_container_network != 'host' %}
 {% for network in semaphore_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ semaphore_identifier }}
 {% endfor %}
+{% endif %}
 
 ExecStart={{ devture_systemd_docker_base_host_command_docker }} start --attach {{ semaphore_identifier }}
 
